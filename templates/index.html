@@ -4,16 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- SEO Meta Tags -->
-    <title>ICTUE LAMPA - Iglesia Cristo Tu Única Esperanza en Santiago, Lampa</title>
-    <meta name="description" content="ICTUE LAMPA - Iglesia Cristo Tu Única Esperanza en Santiago, Lampa. Servicios religiosos, matrimonios cristianos, oración y comunidad de fe. Ubicados en Callejón Balmaceda 1087.">
-    <meta name="keywords" content="ICTUE, LAMPA, iglesia, cristo, única esperanza, Santiago, Lampa, servicios religiosos, matrimonios cristianos, oración, pastor Eduardo Navarrete, pastora Mireya Pardo">
+    <!-- SEO Meta Tags OPTIMIZADOS -->
+    <title>ICTUE LAMPA - Iglesia Cristo Tu Única Esperanza | Santiago, Lampa</title>
+    <meta name="description" content="ICTUE LAMPA - Iglesia Cristo Tu Única Esperanza en Santiago, Lampa. Servicios religiosos domingos 11:30, martes y jueves 19:00. Matrimonios cristianos, bautismos y discipulado en Callejón Balmaceda 1087.">
+    <meta name="keywords" content="ICTUE LAMPA, iglesia evangélica Lampa, iglesia cristiana Santiago, Cristo Tu Única Esperanza, servicios religiosos Lampa, matrimonios cristianos Lampa, bautismos Santiago, Pastor Eduardo Navarrete, Pastora Mireya Pardo, iglesias en Lampa, Callejón Balmaceda iglesia">
     <meta name="author" content="ICTUE LAMPA">
     <meta name="robots" content="index, follow">
     
     <!-- Open Graph para redes sociales -->
-    <meta property="og:title" content="ICTUE LAMPA - Cristo Tu Única Esperanza">
-    <meta property="og:description" content="Iglesia cristiana en Santiago, Lampa. Servicios religiosos, matrimonios, oración y comunidad de fe. ¡Te esperamos!">
+    <meta property="og:title" content="ICTUE LAMPA - Iglesia Cristo Tu Única Esperanza | Santiago, Lampa">
+    <meta property="og:description" content="Iglesia evangélica en Santiago, Lampa. Servicios religiosos, matrimonios cristianos, bautismos y comunidad de fe. Ubicados en Callejón Balmaceda 1087.">
     <meta property="og:image" content="{{ url_for('static', filename='images/logo.png.jpeg') }}">
     <meta property="og:url" content="https://ictue-lampa-web.onrender.com/">
     <meta property="og:type" content="website">
@@ -21,47 +21,68 @@
     
     <!-- Twitter Cards -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="ICTUE LAMPA - Cristo Tu Única Esperanza">
-    <meta name="twitter:description" content="Iglesia cristiana en Santiago, Lampa. Servicios religiosos, matrimonios, oración y comunidad de fe.">
+    <meta name="twitter:title" content="ICTUE LAMPA - Iglesia Cristo Tu Única Esperanza">
+    <meta name="twitter:description" content="Iglesia evangélica en Santiago, Lampa. Servicios religiosos, matrimonios cristianos, bautismos y comunidad de fe.">
     <meta name="twitter:image" content="{{ url_for('static', filename='images/logo.png.jpeg') }}">
     
     <!-- Canonical URL -->
     <link rel="canonical" href="https://ictue-lampa-web.onrender.com/">
     
+    <!-- SCHEMA MARKUP OPTIMIZADO PARA GOOGLE -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Church",
+      "name": "ICTUE LAMPA - Iglesia Cristo Tu Única Esperanza",
+      "alternateName": ["ICTUE LAMPA", "Iglesia Cristo Tu Única Esperanza", "ICTUE"],
+      "description": "Iglesia evangélica en Lampa, Santiago. Servicios religiosos, matrimonios cristianos, bautismos y discipulado cristiano.",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Callejón Balmaceda 1087",
+        "addressLocality": "Lampa",
+        "addressRegion": "Santiago",
+        "addressCountry": "CL"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "-33.2833",
+        "longitude": "-70.8833"
+      },
+      "telephone": "+56972974990",
+      "email": "sebanava2003@gmail.com",
+      "url": "https://ictue-lampa-web.onrender.com/",
+      "openingHours": [
+        "Su 11:30-13:00",
+        "Tu 19:00-20:30", 
+        "Th 19:00-20:30"
+      ],
+      "sameAs": [
+        "https://web.facebook.com/ictuelampa",
+        "https://www.instagram.com/ictuelampa/",
+        "https://www.youtube.com/@ictuelampa4074"
+      ],
+      "founder": {
+        "@type": "Person",
+        "name": "Pastor Eduardo Navarrete"
+      },
+      "employee": [
+        {
+          "@type": "Person", 
+          "name": "Pastor Eduardo Navarrete",
+          "jobTitle": "Pastor Principal"
+        },
+        {
+          "@type": "Person",
+          "name": "Pastora Mireya Pardo", 
+          "jobTitle": "Pastora Principal"
+        }
+      ]
+    }
+    </script>
+    
     <!-- Favicons -->
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/logo.png.jpeg') }}">
     <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/logo.png.jpeg') }}">
-    
-    <!-- Local Business Schema -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Church",
-        "name": "ICTUE LAMPA - Cristo Tu Única Esperanza",
-        "description": "Iglesia cristiana en Santiago, Lampa",
-        "url": "https://ictue-lampa-web.onrender.com/",
-        "logo": "{{ url_for('static', filename='images/logo.png.jpeg') }}",
-        "address": {
-            "@type": "PostalAddress",
-            "streetAddress": "Callejón Balmaceda 1087",
-            "addressLocality": "Santiago",
-            "addressRegion": "Lampa",
-            "addressCountry": "CL"
-        },
-        "telephone": "+56972974990",
-        "email": "sebanava2003@gmail.com",
-        "sameAs": [
-            "https://web.facebook.com/ictuelampa",
-            "https://www.instagram.com/ictuelampa/",
-            "https://www.youtube.com/@ictuelampa4074"
-        ],
-        "openingHours": [
-            "Tu 19:00-21:00",
-            "Th 19:00-21:00", 
-            "Su 11:30-13:30"
-        ]
-    }
-    </script>
     
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -116,7 +137,7 @@
                 </article>
                 <article class="service-card">
                     <div class="service-icon">💒</div>
-                    <h3>Matrimonios Cristianos</h3>
+                    <h3>Matrimonios Cristianos en Lampa</h3>
                     <p>Realizamos ceremonias matrimoniales cristianas en Santiago, Lampa. Haz tu solicitud para que nuestros pastores oficien tu boda en ICTUE LAMPA.</p>
                 </article>
                 <article class="service-card">
@@ -128,6 +149,71 @@
         </div>
     </section>
 
+    <!-- NUEVA SECCIÓN SEO OPTIMIZADA -->
+    <section id="iglesias-lampa" style="padding: 50px 20px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+        <div class="container" style="max-width: 1200px; margin: 0 auto;">
+            <h2 style="color: #2c5aa0; text-align: center; margin-bottom: 30px; font-size: 2.5em; font-weight: 700;">
+                ¿Buscas una Iglesia en Lampa, Santiago?
+            </h2>
+            
+            <p style="font-size: 20px; line-height: 1.6; text-align: center; margin-bottom: 40px; max-width: 900px; margin-left: auto; margin-right: auto; color: #333;">
+                Si estás buscando una <strong>iglesia evangélica en Lampa</strong>, 
+                <strong>ICTUE LAMPA</strong> es tu hogar espiritual. Somos una 
+                <strong>comunidad cristiana en Santiago</strong> comprometida con 
+                el crecimiento espiritual de cada persona.
+            </p>
+            
+            <h3 style="color: #1a4480; margin-bottom: 30px; text-align: center; font-size: 1.8em;">¿Por qué elegir ICTUE LAMPA?</h3>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; max-width: 1000px; margin: 0 auto 40px auto;">
+                <div style="padding: 25px; background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-left: 5px solid #2c5aa0;">
+                    <div style="font-size: 2em; margin-bottom: 10px;">📍</div>
+                    <h4 style="color: #2c5aa0; margin-bottom: 10px;">Ubicación Estratégica</h4>
+                    <p style="line-height: 1.6;">Ubicación céntrica en <strong>Callejón Balmaceda 1087, Lampa</strong> - Fácil acceso en transporte público</p>
+                </div>
+                
+                <div style="padding: 25px; background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-left: 5px solid #2c5aa0;">
+                    <div style="font-size: 2em; margin-bottom: 10px;">⏰</div>
+                    <h4 style="color: #2c5aa0; margin-bottom: 10px;">Horarios Convenientes</h4>
+                    <p style="line-height: 1.6;">Domingos 11:30, Martes y Jueves 19:00 - Horarios que se adaptan a tu rutina</p>
+                </div>
+                
+                <div style="padding: 25px; background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-left: 5px solid #2c5aa0;">
+                    <div style="font-size: 2em; margin-bottom: 10px;">👨‍👩‍👧‍👦</div>
+                    <h4 style="color: #2c5aa0; margin-bottom: 10px;">Ambiente Familiar</h4>
+                    <p style="line-height: 1.6;">Comunidad acogedora donde cada familia encuentra su lugar en Cristo</p>
+                </div>
+                
+                <div style="padding: 25px; background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-left: 5px solid #2c5aa0;">
+                    <div style="font-size: 2em; margin-bottom: 10px;">🙏</div>
+                    <h4 style="color: #2c5aa0; margin-bottom: 10px;">Cuidado Pastoral</h4>
+                    <p style="line-height: 1.6;">Oración y consejería pastoral disponible para toda la congregación</p>
+                </div>
+                
+                <div style="padding: 25px; background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-left: 5px solid #2c5aa0;">
+                    <div style="font-size: 2em; margin-bottom: 10px;">💒</div>
+                    <h4 style="color: #2c5aa0; margin-bottom: 10px;">Ceremonias Especiales</h4>
+                    <p style="line-height: 1.6;">Matrimonios cristianos y bautismos con pastores certificados</p>
+                </div>
+                
+                <div style="padding: 25px; background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-left: 5px solid #2c5aa0;">
+                    <div style="font-size: 2em; margin-bottom: 10px;">📻</div>
+                    <h4 style="color: #2c5aa0; margin-bottom: 10px;">Programas Radiales</h4>
+                    <p style="line-height: 1.6;">Escúchanos los domingos a las 16:00 en Radio 97.1</p>
+                </div>
+            </div>
+            
+            <!-- Enlaces a páginas específicas -->
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="matrimonios.html" style="display: inline-block; background: linear-gradient(135deg, #2c5aa0 0%, #1a4480 100%); color: white; padding: 18px 35px; text-decoration: none; border-radius: 10px; margin: 10px; font-weight: bold; font-size: 16px; box-shadow: 0 4px 15px rgba(44,90,160,0.3); transition: all 0.3s;">
+                    💒 Matrimonios Cristianos en Lampa
+                </a>
+                <a href="bautismos.html" style="display: inline-block; background: linear-gradient(135deg, #1a4480 0%, #2c5aa0 100%); color: white; padding: 18px 35px; text-decoration: none; border-radius: 10px; margin: 10px; font-weight: bold; font-size: 16px; box-shadow: 0 4px 15px rgba(26,68,128,0.3); transition: all 0.3s;">
+                    💧 Bautismos en ICTUE LAMPA
+                </a>
+            </div>
+        </div>
+    </section>
     <!-- Ubicación -->
     <section class="location">
         <div class="container">
@@ -207,6 +293,104 @@
         </div>
     </section>
 
+    <!-- SECCIÓN PREGUNTAS FRECUENTES OPTIMIZADA PARA SEO -->
+    <section id="preguntas-frecuentes" style="padding: 60px 20px; background: white;">
+        <div class="container" style="max-width: 1200px; margin: 0 auto;">
+            <h2 style="color: #2c5aa0; text-align: center; margin-bottom: 50px; font-size: 2.5em; font-weight: 700;">
+                Preguntas Frecuentes sobre ICTUE LAMPA
+            </h2>
+            
+            <div style="max-width: 1000px; margin: 0 auto;">
+                <div style="border: 2px solid #e8f4f8; padding: 30px; border-radius: 15px; margin-bottom: 25px; background: linear-gradient(135deg, #f8f9fa 0%, #e8f4f8 100%); box-shadow: 0 5px 20px rgba(0,0,0,0.08);">
+                    <h3 style="color: #1a4480; margin-bottom: 15px; font-size: 1.4em; display: flex; align-items: center;">
+                        <span style="font-size: 1.5em; margin-right: 10px;">📍</span>
+                        ¿Dónde queda ICTUE LAMPA?
+                    </h3>
+                    <p style="font-size: 17px; line-height: 1.7; color: #333;">
+                        Estamos ubicados en <strong>Callejón Balmaceda 1087, Lampa, Santiago</strong>. 
+                        Somos una <strong>iglesia evangélica en el centro de Lampa</strong>, 
+                        con fácil acceso en transporte público, estacionamiento disponible y una ubicación estratégica 
+                        que permite llegar cómodamente desde cualquier punto de Santiago.
+                    </p>
+                </div>
+                
+                <div style="border: 2px solid #e8f4f8; padding: 30px; border-radius: 15px; margin-bottom: 25px; background: linear-gradient(135deg, #f8f9fa 0%, #e8f4f8 100%); box-shadow: 0 5px 20px rgba(0,0,0,0.08);">
+                    <h3 style="color: #1a4480; margin-bottom: 15px; font-size: 1.4em; display: flex; align-items: center;">
+                        <span style="font-size: 1.5em; margin-right: 10px;">🕐</span>
+                        ¿Cuáles son los horarios de culto en ICTUE LAMPA?
+                    </h3>
+                    <p style="font-size: 17px; line-height: 1.7; margin-bottom: 15px; color: #333;">
+                        Nuestros <strong>servicios religiosos en Lampa</strong> están diseñados para adaptarse a tu rutina:
+                    </p>
+                    <div style="background: white; padding: 20px; border-radius: 10px; border-left: 5px solid #2c5aa0;">
+                        <ul style="font-size: 16px; line-height: 2; padding-left: 0; list-style: none;">
+                            <li style="margin-bottom: 10px; padding: 10px; background: #f8f9fa; border-radius: 8px;">
+                                🌅 <strong>Domingos: 11:30 AM</strong> - Culto principal con toda la familia
+                            </li>
+                            <li style="margin-bottom: 10px; padding: 10px; background: #f8f9fa; border-radius: 8px;">
+                                🌙 <strong>Martes: 7:00 PM</strong> - Estudio bíblico y enseñanza profunda
+                            </li>
+                            <li style="margin-bottom: 10px; padding: 10px; background: #f8f9fa; border-radius: 8px;">
+                                🌙 <strong>Jueves: 7:00 PM</strong> - Reunión de oración e intercesión
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div style="border: 2px solid #e8f4f8; padding: 30px; border-radius: 15px; margin-bottom: 25px; background: linear-gradient(135deg, #f8f9fa 0%, #e8f4f8 100%); box-shadow: 0 5px 20px rgba(0,0,0,0.08);">
+                    <h3 style="color: #1a4480; margin-bottom: 15px; font-size: 1.4em; display: flex; align-items: center;">
+                        <span style="font-size: 1.5em; margin-right: 10px;">✝️</span>
+                        ¿Qué significa ICTUE?
+                    </h3>
+                    <p style="font-size: 17px; line-height: 1.7; color: #333;">
+                        <strong>ICTUE</strong> significa <strong>"Iglesia Cristo Tu Única Esperanza"</strong>. 
+                        Somos una <strong>comunidad de fe en Lampa</strong> que cree firmemente en Jesucristo como 
+                        salvador y única esperanza de la humanidad. Nuestra misión es llevar el amor transformador 
+                        de Cristo a cada familia en Santiago y extender Su reino con poder y amor.
+                    </p>
+                </div>
+                
+                <div style="border: 2px solid #e8f4f8; padding: 30px; border-radius: 15px; margin-bottom: 25px; background: linear-gradient(135deg, #f8f9fa 0%, #e8f4f8 100%); box-shadow: 0 5px 20px rgba(0,0,0,0.08);">
+                    <h3 style="color: #1a4480; margin-bottom: 15px; font-size: 1.4em; display: flex; align-items: center;">
+                        <span style="font-size: 1.5em; margin-right: 10px;">💒</span>
+                        ¿Hacen ceremonias de matrimonio en ICTUE LAMPA?
+                    </h3>
+                    <p style="font-size: 17px; line-height: 1.7; color: #333;">
+                        Sí, realizamos <strong>matrimonios cristianos en Lampa</strong> con gran alegría y bendición. 
+                        Nuestros pastores están debidamente certificados para oficializar bodas religiosas 
+                        con validez legal en Chile. También ofrecemos consejería prematrimonial completa, 
+                        preparación espiritual para parejas y acompañamiento pastoral durante todo el proceso.
+                    </p>
+                </div>
+                
+                <div style="border: 2px solid #e8f4f8; padding: 30px; border-radius: 15px; margin-bottom: 25px; background: linear-gradient(135deg, #f8f9fa 0%, #e8f4f8 100%); box-shadow: 0 5px 20px rgba(0,0,0,0.08);">
+                    <h3 style="color: #1a4480; margin-bottom: 15px; font-size: 1.4em; display: flex; align-items: center;">
+                        <span style="font-size: 1.5em; margin-right: 10px;">💧</span>
+                        ¿Realizan bautismos en ICTUE LAMPA?
+                    </h3>
+                    <p style="font-size: 17px; line-height: 1.7; color: #333;">
+                        Absolutamente. Celebramos <strong>bautismos cristianos en Lampa</strong> regularmente 
+                        como una hermosa declaración pública de fe. Ofrecemos preparación bautismal completa, 
+                        ceremonias familiares llenas de gozo, y seguimiento espiritual personalizado 
+                        para todos los nuevos creyentes que deseen dar este importante paso de obediencia a Cristo.
+                    </p>
+                </div>
+
+                <div style="border: 2px solid #e8f4f8; padding: 30px; border-radius: 15px; margin-bottom: 25px; background: linear-gradient(135deg, #f8f9fa 0%, #e8f4f8 100%); box-shadow: 0 5px 20px rgba(0,0,0,0.08);">
+                    <h3 style="color: #1a4480; margin-bottom: 15px; font-size: 1.4em; display: flex; align-items: center;">
+                        <span style="font-size: 1.5em; margin-right: 10px;">🌱</span>
+                        ¿Qué es el Programa Plantados de ICTUE LAMPA?
+                    </h3>
+                    <p style="font-size: 17px; line-height: 1.7; color: #333;">
+                        El <strong>Programa Plantados</strong> es nuestro curso de <strong>discipulado cristiano en Lampa</strong> 
+                        diseñado especialmente para nuevos creyentes. Si recibiste al Señor Jesús en tu corazón, 
+                        este programa te ayudará a crecer espiritualmente, entender las bases de la fe cristiana 
+                        y desarrollar una relación sólida con Dios a través de Su Palabra.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
     <!-- Horarios -->
     <section class="schedule">
         <div class="container">
@@ -242,15 +426,57 @@
         </div>
     </section>
 
+    <!-- SECCIÓN CONTACTO Y LLAMADA A LA ACCIÓN OPTIMIZADA -->
+    <section style="padding: 60px 20px; background: linear-gradient(135deg, #2c5aa0 0%, #1a4480 100%); color: white;">
+        <div class="container" style="max-width: 1200px; margin: 0 auto; text-align: center;">
+            <h2 style="font-size: 2.5em; margin-bottom: 20px; font-weight: 700;">
+                ¡Únete a la Familia ICTUE LAMPA!
+            </h2>
+            <p style="font-size: 20px; line-height: 1.6; margin-bottom: 40px; max-width: 800px; margin-left: auto; margin-right: auto;">
+                Ven y forma parte de nuestra <strong>comunidad cristiana en Santiago, Lampa</strong>. 
+                En ICTUE LAMPA encontrarás una familia que te ama y un lugar donde crecer en fe.
+            </p>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-bottom: 40px;">
+                <div style="background: rgba(255,255,255,0.1); padding: 25px; border-radius: 15px; backdrop-filter: blur(10px);">
+                    <div style="font-size: 2.5em; margin-bottom: 10px;">📞</div>
+                    <h4 style="margin-bottom: 10px;">Llámanos</h4>
+                    <p>+56 9 7297 4990</p>
+                </div>
+                
+                <div style="background: rgba(255,255,255,0.1); padding: 25px; border-radius: 15px; backdrop-filter: blur(10px);">
+                    <div style="font-size: 2.5em; margin-bottom: 10px;">✉️</div>
+                    <h4 style="margin-bottom: 10px;">Escríbenos</h4>
+                    <p>sebanava2003@gmail.com</p>
+                </div>
+                
+                <div style="background: rgba(255,255,255,0.1); padding: 25px; border-radius: 15px; backdrop-filter: blur(10px);">
+                    <div style="font-size: 2.5em; margin-bottom: 10px;">📍</div>
+                    <h4 style="margin-bottom: 10px;">Visítanos</h4>
+                    <p>Callejón Balmaceda 1087<br>Lampa, Santiago</p>
+                </div>
+            </div>
+            
+            <div style="margin-top: 40px;">
+                <a href="https://wa.me/56972974990" target="_blank" style="display: inline-block; background: #25D366; color: white; padding: 18px 35px; text-decoration: none; border-radius: 50px; margin: 10px; font-weight: bold; font-size: 18px; box-shadow: 0 6px 20px rgba(37,211,102,0.4); transition: all 0.3s;">
+                    💬 WhatsApp ICTUE LAMPA
+                </a>
+                <a href="https://www.google.com/maps/search/?api=1&query=Callejón+Balmaceda+1087+Lampa+Santiago" target="_blank" style="display: inline-block; background: rgba(255,255,255,0.2); color: white; padding: 18px 35px; text-decoration: none; border-radius: 50px; margin: 10px; font-weight: bold; font-size: 18px; border: 2px solid white; transition: all 0.3s;">
+                    🗺️ Cómo Llegar
+                </a>
+            </div>
+        </div>
+    </section>
+
     <!-- Footer -->
     <footer class="footer" id="contacto">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
                     <h3>ICTUE LAMPA</h3>
-                    <p>Cristo Tu Única Esperanza - Iglesia en Santiago, Lampa</p>
+                    <p>Cristo Tu Única Esperanza - Iglesia evangélica en Santiago, Lampa</p>
                     <div class="social-links">
-                        <a href="https://web.facebook.com/ictuelampa?locale=es_LA" target="_blank" title="Facebook ICTUE LAMPA" class="social-facebook">
+                        <a href="https://web.facebook.com/ictuelampa" target="_blank" title="Facebook ICTUE LAMPA" class="social-facebook">
                             <svg viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                             </svg>
@@ -282,6 +508,9 @@
             </div>
             <div class="footer-bottom">
                 <p>&copy; 2025 ICTUE LAMPA - Cristo Tu Única Esperanza. Todos los derechos reservados.</p>
+                <p style="margin-top: 10px; font-size: 14px; opacity: 0.8;">
+                    Iglesia evangélica en Lampa, Santiago | Servicios religiosos | Matrimonios cristianos | Bautismos
+                </p>
             </div>
         </div>
     </footer>
