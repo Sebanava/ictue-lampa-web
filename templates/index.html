@@ -100,8 +100,8 @@
     <header class="header">
         <nav class="nav-container">
             <div class="logo-section">
-                <div class="logo-circle" style="width: 45px !important; height: 45px !important; border-radius: 50% !important; overflow: hidden !important; background: transparent !important; display: flex !important; align-items: center !important; justify-content: center !important; padding: 0 !important; box-shadow: 0 2px 8px rgba(237, 28, 36, 0.3) !important;">
-                    <img src="{{ url_for('static', filename='images/logo.png.jpeg') }}" alt="Logo ICTUE LAMPA - Cristo Tu Única Esperanza" class="logo-img" style="width: 100% !important; height: 100% !important; border-radius: 50% !important; object-fit: cover !important;">
+                <div style="width: 45px !important; height: 45px !important; border-radius: 50% !important; overflow: hidden !important; background: transparent !important; display: flex !important; align-items: center !important; justify-content: center !important; padding: 0 !important; box-shadow: 0 2px 8px rgba(237, 28, 36, 0.3) !important; position: relative !important;">
+                    <img src="{{ url_for('static', filename='images/logo.png.jpeg') }}" alt="Logo ICTUE LAMPA - Cristo Tu Única Esperanza" style="width: 100% !important; height: 100% !important; border-radius: 50% !important; object-fit: cover !important; display: block !important;">
                 </div>
                 <div class="logo-text">
                     <h1>ICTUE <span class="logo-lampa">LAMPA</span></h1>
@@ -418,5 +418,12 @@
 
     // Mostrar instrucciones para iOS
     if (isIOS() && !isInStandaloneMode()) {
-        console.log('📱 Detectado iOS - Mo
+        console.log('📱 Detectado iOS - Mostrando instrucciones');
+        
+        // Crear banner de instrucciones para iOS
+        const iosPrompt = document.createElement('div');
+        iosPrompt.id = 'iosInstallPrompt';
+        iosPrompt.innerHTML = `
+            <div style="
+                position
 ```
