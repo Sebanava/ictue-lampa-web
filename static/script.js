@@ -3,7 +3,6 @@ const observerOptions = {
     threshold: 0.1,
     rootMargin: '0px 0px -50px 0px'
 };
-
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -19,14 +18,12 @@ document.addEventListener('DOMContentLoaded', () => {
         card.style.animationDelay = `${index * 0.1}s`;
         observer.observe(card);
     });
-
     // Observar cards de pastores
     document.querySelectorAll('.pastor-card').forEach((card, index) => {
         card.style.animationDelay = `${index * 0.2}s`;
         observer.observe(card);
     });
-
-    // IMPORTANTE: Observar cards de eventos
+    // Observar cards de eventos
     document.querySelectorAll('.event-visual-card').forEach((card, index) => {
         card.style.animationDelay = `${index * 0.1}s`;
         observer.observe(card);
@@ -40,7 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (target) {
                 const headerHeight = document.querySelector('.header').offsetHeight;
                 const targetPosition = target.offsetTop - headerHeight;
-                
                 window.scrollTo({
                     top: targetPosition,
                     behavior: 'smooth'
@@ -54,7 +50,6 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('scroll', () => {
         const currentScroll = window.pageYOffset;
         const header = document.querySelector('.header');
-        
         if (currentScroll > 100) {
             header.style.background = 'rgba(255, 255, 255, 0.98)';
             header.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
@@ -62,7 +57,6 @@ document.addEventListener('DOMContentLoaded', () => {
             header.style.background = 'rgba(255, 255, 255, 0.95)';
             header.style.boxShadow = 'none';
         }
-        
         lastScroll = currentScroll;
     });
 
@@ -71,9 +65,31 @@ document.addEventListener('DOMContentLoaded', () => {
         const decoration = document.querySelector('.hero-decoration');
         const scrolled = window.pageYOffset;
         const parallax = scrolled * 0.5;
-        
         if (decoration) {
             decoration.style.transform = `translateY(${parallax}px)`;
         }
     });
 });
+
+// =============================================
+// PETICIÓN DE ORACIÓN - ENVÍO POR WHATSAPP
+// =============================================
+function enviarPeticion() {
+    const nombre = document.getElementById('oracion-nombre').value.trim();
+    const peticion = document.getElementById('oracion-peticion').value.trim();
+
+    if (!nombre) {
+        alert('Por favor ingresa tu nombre 😊');
+        return;
+    }
+    if (!peticion) {
+        alert('Por favor escribe tu petición de oración 🙏');
+        return;
+    }
+
+    const numero = '56993976371';
+    const mensaje = `🙏 *PETICIÓN DE ORACIÓN - ICTUE LAMPA*\n\n*Nombre:* ${nombre}\n\n*Petición:* ${peticion}`;
+    const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
+
+    window.open(url, '_blank');
+}
