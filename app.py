@@ -1,4 +1,8 @@
-from flask import Flask, render_template, make_response
+import os
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from flask import Flask, render_template, make_response, request, jsonify
 
 # Crear la aplicación Flask
 app = Flask(__name__)
@@ -69,6 +73,48 @@ Sitemap: https://ictue-lampa-web.onrender.com/sitemap.xml
     response = make_response(robots_txt)
     response.headers["Content-Type"] = "text/plain"
     return response
+
+# Petición de oración — envío por correo vía Brevo SMTP
+@app.route('/enviar-peticion', methods=['POST'])
+def enviar_peticion():
+    data = request.get_json()
+    nombre  = data.get('nombre', '').strip()
+    peticion = data.get('peticion', '').strip()
+
+    if not nombre or not peticion:
+        return jsonify({'ok': False, 'error': 'Faltan datos'}), 400
+
+    smtp_user = os.environ.get('BREVO_USER', 'a9ef68001@smtp-brevo.com')
+    smtp_pass = os.environ.get('BREVO_PASS', 'K62hRBGCD73yUf40')
+    dest      = os.environ.get('MAIL_DEST',  'ictueoracion@gmail.com')
+
+    msg = MIMEMultipart()
+    msg['From']    = smtp_user
+    msg['To']      = dest
+    msg['Subject'] = f'🙏 Petición de oración de {nombre} — ICTUE LAMPA'
+
+    cuerpo = f"""
+Nueva petición de oración recibida desde la página web de ICTUE LAMPA:
+
+Nombre: {nombre}
+
+Petición:
+{peticion}
+
+---
+Este mensaje fue enviado automáticamente desde ictue-lampa-web.onrender.com
+"""
+    msg.attach(MIMEText(cuerpo, 'plain', 'utf-8'))
+
+    try:
+        with smtplib.SMTP('smtp-relay.brevo.com', 587) as server:
+            server.starttls()
+            server.login(smtp_user, smtp_pass)
+            server.sendmail(smtp_user, dest, msg.as_string())
+        return jsonify({'ok': True})
+    except Exception as e:
+        return jsonify({'ok': False, 'error': str(e)}), 500
+
 
 # Función para ejecutar la aplicación
 if __name__ == '__main__':

@@ -63,22 +63,44 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ================================
-// PETICIÓN DE ORACIÓN - WHATSAPP
+// PETICIÓN DE ORACIÓN - CORREO
 // ================================
-function enviarPeticion() {
-    const nombre = document.getElementById('oracion-nombre').value.trim();
+async function enviarPeticion() {
+    const nombre   = document.getElementById('oracion-nombre').value.trim();
     const peticion = document.getElementById('oracion-peticion').value.trim();
+    const mensaje  = document.getElementById('oracion-mensaje');
 
-    if (!nombre) {
-        alert('Por favor ingresa tu nombre 😊');
-        return;
-    }
-    if (!peticion) {
-        alert('Por favor escribe tu petición de oración 🙏');
-        return;
-    }
+    if (!nombre) { alert('Por favor ingresa tu nombre 😊'); return; }
+    if (!peticion) { alert('Por favor escribe tu petición de oración 🙏'); return; }
 
-    const numero = '56993976371';
-    const mensaje = `🙏 *PETICIÓN DE ORACIÓN - ICTUE LAMPA*\n\n*Nombre:* ${nombre}\n\n*Petición:* ${peticion}`;
-    window.open(`https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`, '_blank');
+    const btn = document.querySelector('.oracion-btn');
+    btn.disabled = true;
+    btn.textContent = 'Enviando...';
+
+    try {
+        const res = await fetch('/enviar-peticion', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ nombre, peticion })
+        });
+        const data = await res.json();
+
+        if (data.ok) {
+            mensaje.className = 'oracion-mensaje oracion-ok';
+            mensaje.textContent = '🙏 ¡Petición enviada! Nuestro equipo pastoral orará por ti.';
+            document.getElementById('oracion-nombre').value = '';
+            document.getElementById('oracion-peticion').value = '';
+        } else {
+            mensaje.className = 'oracion-mensaje oracion-error';
+            mensaje.textContent = '❌ Hubo un error al enviar. Inténtalo de nuevo.';
+        }
+    } catch {
+        mensaje.className = 'oracion-mensaje oracion-error';
+        mensaje.textContent = '❌ Hubo un error al enviar. Inténtalo de nuevo.';
+    } finally {
+        btn.disabled = false;
+        btn.textContent = '🙏 Enviar Petición de Oración';
+        mensaje.style.display = 'block';
+        setTimeout(() => { mensaje.style.display = 'none'; }, 6000);
+    }
 }
