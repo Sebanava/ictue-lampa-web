@@ -89,20 +89,19 @@ def enviar_peticion():
     dest      = os.environ.get('MAIL_DEST',  'ictueoracion@gmail.com')
 
     msg = MIMEMultipart()
-    msg['From']    = smtp_user
+    msg['From']    = dest
     msg['To']      = dest
-    msg['Subject'] = f'🙏 Petición de oración de {nombre} — ICTUE LAMPA'
+    msg['Subject'] = f'Peticion de oracion de {nombre} - ICTUE LAMPA'
 
-    cuerpo = f"""
-Nueva petición de oración recibida desde la página web de ICTUE LAMPA:
+    cuerpo = f"""Nueva peticion de oracion recibida desde la pagina web de ICTUE LAMPA:
 
 Nombre: {nombre}
 
-Petición:
+Peticion:
 {peticion}
 
 ---
-Este mensaje fue enviado automáticamente desde ictue-lampa-web.onrender.com
+Enviado automaticamente desde la web de ICTUE LAMPA
 """
     msg.attach(MIMEText(cuerpo, 'plain', 'utf-8'))
 
@@ -113,6 +112,7 @@ Este mensaje fue enviado automáticamente desde ictue-lampa-web.onrender.com
             server.sendmail(smtp_user, dest, msg.as_string())
         return jsonify({'ok': True})
     except Exception as e:
+        print(f'ERROR SMTP: {str(e)}')
         return jsonify({'ok': False, 'error': str(e)}), 500
 
 
