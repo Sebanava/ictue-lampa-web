@@ -1,7 +1,5 @@
 import os
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+import requests as http
 from flask import Flask, render_template, make_response, request, jsonify
 
 # Crear la aplicación Flask
@@ -74,45 +72,39 @@ Sitemap: https://ictue-lampa-web.onrender.com/sitemap.xml
     response.headers["Content-Type"] = "text/plain"
     return response
 
-# Petición de oración — envío por correo vía Brevo SMTP
+# Petición de oración — envío por correo vía Brevo API
 @app.route('/enviar-peticion', methods=['POST'])
 def enviar_peticion():
-    data = request.get_json()
-    nombre  = data.get('nombre', '').strip()
+    data     = request.get_json()
+    nombre   = data.get('nombre', '').strip()
     peticion = data.get('peticion', '').strip()
 
     if not nombre or not peticion:
         return jsonify({'ok': False, 'error': 'Faltan datos'}), 400
 
-    smtp_user = os.environ.get('BREVO_USER', 'a9ef68001@smtp-brevo.com')
-    smtp_pass = os.environ.get('BREVO_PASS', 'K62hRBGCD73yUf40')
-    dest      = os.environ.get('MAIL_DEST',  'ictueoracion@gmail.com')
+    api_key = os.environ.get('BREVO_API_KEY', '')
+    dest    = os.environ.get('MAIL_DEST', 'ictueoracion@gmail.com')
 
-    msg = MIMEMultipart()
-    msg['From']    = dest
-    msg['To']      = dest
-    msg['Subject'] = f'Peticion de oracion de {nombre} - ICTUE LAMPA'
-
-    cuerpo = f"""Nueva peticion de oracion recibida desde la pagina web de ICTUE LAMPA:
-
-Nombre: {nombre}
-
-Peticion:
-{peticion}
-
----
-Enviado automaticamente desde la web de ICTUE LAMPA
-"""
-    msg.attach(MIMEText(cuerpo, 'plain', 'utf-8'))
+    payload = {
+        "sender":      {"name": "ICTUE LAMPA Web", "email": dest},
+        "to":          [{"email": dest}],
+        "subject":     f"Peticion de oracion de {nombre} - ICTUE LAMPA",
+        "textContent": f"Nombre: {nombre}\n\nPeticion:\n{peticion}\n\n---\nEnviado desde la web de ICTUE LAMPA"
+    }
 
     try:
-        with smtplib.SMTP('smtp-relay.brevo.com', 587, timeout=30) as server:
-            server.starttls()
-            server.login(smtp_user, smtp_pass)
-            server.sendmail(smtp_user, dest, msg.as_string())
-        return jsonify({'ok': True})
+        r = http.post(
+            "https://api.brevo.com/v3/smtp/email",
+            json=payload,
+            headers={"api-key": api_key, "content-type": "application/json"},
+            timeout=15
+        )
+        print(f'Brevo API response: {r.status_code} {r.text}')
+        if r.status_code == 201:
+            return jsonify({'ok': True})
+        return jsonify({'ok': False, 'error': r.text}), 500
     except Exception as e:
-        print(f'ERROR SMTP: {str(e)}')
+        print(f'ERROR: {str(e)}')
         return jsonify({'ok': False, 'error': str(e)}), 500
 
 
