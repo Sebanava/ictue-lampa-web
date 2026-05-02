@@ -1,30 +1,21 @@
 // Intersection Observer para animaciones
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-};
+const observerOptions = { threshold: 0.12, rootMargin: '0px 0px -60px 0px' };
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             entry.target.classList.add('animate-in');
+            observer.unobserve(entry.target);
         }
     });
 }, observerOptions);
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Observar cards de servicios
     document.querySelectorAll('.service-card').forEach((card, index) => {
-        card.style.animationDelay = `${index * 0.1}s`;
+        card.style.animationDelay = `${index * 0.15}s`;
         observer.observe(card);
     });
-    // Observar cards de pastores
     document.querySelectorAll('.pastor-card').forEach((card, index) => {
         card.style.animationDelay = `${index * 0.2}s`;
-        observer.observe(card);
-    });
-    // Observar cards de eventos
-    document.querySelectorAll('.event-visual-card').forEach((card, index) => {
-        card.style.animationDelay = `${index * 0.1}s`;
         observer.observe(card);
     });
 
@@ -35,8 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const target = document.querySelector(this.getAttribute('href'));
             if (target) {
                 const headerHeight = document.querySelector('.header').offsetHeight;
-                const targetPosition = target.offsetTop - headerHeight;
-                window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+                window.scrollTo({ top: target.offsetTop - headerHeight, behavior: 'smooth' });
             }
         });
     });
@@ -53,12 +43,25 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Parallax effect para hero decoration
+    // Parallax suave en hero
     window.addEventListener('scroll', () => {
         const decoration = document.querySelector('.hero-decoration');
         if (decoration) {
-            decoration.style.transform = `translateY(${window.pageYOffset * 0.5}px)`;
+            decoration.style.transform = `translateY(${window.pageYOffset * 0.3}px) rotate(${window.pageYOffset * 0.02}deg)`;
         }
+    });
+
+    // Ripple en botones
+    document.querySelectorAll('.cta-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            const ripple = document.createElement('span');
+            ripple.classList.add('ripple');
+            const rect = this.getBoundingClientRect();
+            ripple.style.left = `${e.clientX - rect.left}px`;
+            ripple.style.top = `${e.clientY - rect.top}px`;
+            this.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 700);
+        });
     });
 });
 
@@ -68,6 +71,8 @@ document.addEventListener('DOMContentLoaded', () => {
 async function enviarPeticion() {
     const nombre   = document.getElementById('oracion-nombre').value.trim();
     const peticion = document.getElementById('oracion-peticion').value.trim();
+    const telefono = document.getElementById('oracion-telefono').value.trim();
+    const llamada  = document.getElementById('oracion-llamada').checked;
     const mensaje  = document.getElementById('oracion-mensaje');
 
     if (!nombre) { alert('Por favor ingresa tu nombre 😊'); return; }
@@ -75,21 +80,23 @@ async function enviarPeticion() {
 
     const btn = document.querySelector('.oracion-btn');
     btn.disabled = true;
-    btn.textContent = 'Enviando...';
+    btn.innerHTML = '⏳ Enviando...';
 
     try {
         const res = await fetch('/enviar-peticion', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nombre, peticion })
+            body: JSON.stringify({ nombre, peticion, telefono, llamada })
         });
         const data = await res.json();
 
         if (data.ok) {
             mensaje.className = 'oracion-mensaje oracion-ok';
-            mensaje.textContent = '🙏 ¡Petición enviada! Nuestro equipo pastoral orará por ti.';
+            mensaje.textContent = '🙏 ¡Petición enviada! Nuestro equipo de intercesión orará por ti.';
             document.getElementById('oracion-nombre').value = '';
             document.getElementById('oracion-peticion').value = '';
+            document.getElementById('oracion-telefono').value = '';
+            document.getElementById('oracion-llamada').checked = false;
         } else {
             mensaje.className = 'oracion-mensaje oracion-error';
             mensaje.textContent = '❌ Hubo un error al enviar. Inténtalo de nuevo.';
@@ -99,8 +106,8 @@ async function enviarPeticion() {
         mensaje.textContent = '❌ Hubo un error al enviar. Inténtalo de nuevo.';
     } finally {
         btn.disabled = false;
-        btn.textContent = '🙏 Enviar Petición de Oración';
+        btn.innerHTML = '🙏 Enviar Petición de Oración';
         mensaje.style.display = 'block';
-        setTimeout(() => { mensaje.style.display = 'none'; }, 6000);
+        setTimeout(() => { mensaje.style.display = 'none'; }, 8000);
     }
 }

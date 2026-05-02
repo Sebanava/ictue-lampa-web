@@ -112,7 +112,6 @@
                 <li><a href="#inicio" aria-label="Ir a inicio">Inicio</a></li>
                 <li><a href="#nosotros" aria-label="Conocer sobre nosotros">Nosotros</a></li>
                 <li><a href="#servicios" aria-label="Ver nuestros servicios">Servicios</a></li>
-                <li><a href="#eventos" aria-label="Ver próximos eventos">Eventos</a></li>
                 <li><a href="#contacto" aria-label="Información de contacto">Contacto</a></li>
                 <li><a href="#oracion" aria-label="Enviar petición de oración">Oración</a></li>
             </ul>
@@ -167,7 +166,7 @@
     <div class="container">
         <h2 class="section-title">Envía tu Petición de Oración</h2>
         <p style="text-align:center; color:#64748b; margin-bottom: 2.5rem; font-size: 1.05rem;">
-            Cuéntanos tu necesidad y nuestro equipo pastoral orará por ti 🙏
+            Cuéntanos tu necesidad y nuestro equipo de intercesión orará por ti 🙏
         </p>
         <div class="oracion-form-wrapper">
             <div class="oracion-card">
@@ -178,6 +177,14 @@
                 <div class="oracion-field">
                     <label for="oracion-peticion">Tu petición de oración</label>
                     <textarea id="oracion-peticion" placeholder="Cuéntanos qué necesitas llevar en oración..." rows="5" maxlength="500"></textarea>
+                </div>
+                <div class="oracion-field">
+                    <label for="oracion-telefono">Tu número de teléfono <span class="campo-opcional">(opcional)</span></label>
+                    <input type="tel" id="oracion-telefono" placeholder="Ej: +56 9 1234 5678" maxlength="20">
+                    <div class="oracion-llamada-check">
+                        <input type="checkbox" id="oracion-llamada">
+                        <label for="oracion-llamada">¿Quieres que te llamemos?</label>
+                    </div>
                 </div>
                 <button class="oracion-btn" onclick="enviarPeticion()">
                     🙏 Enviar Petición de Oración
@@ -237,35 +244,6 @@
     </div>
 </section>
 
-<!-- Eventos -->
-<section class="events" id="eventos">
-    <div class="container">
-        <h2 class="section-title">Próximos Eventos en ICTUE LAMPA</h2>
-        <div class="events-visual-grid">
-            <article class="event-visual-card">
-                <div class="event-visual-image">
-                    <img src="{{ url_for('static', filename='images/inauguracion.jpeg') }}" alt="Gran Inauguración ICTUE LAMPA con Pastor Fernando Chaparro">
-                    <div class="event-visual-overlay">
-                        <h3>Gran Inauguración ICTUE LAMPA</h3>
-                        <p>Con el Pastor Fernando Chaparro</p>
-                        <div class="event-visual-date">Sábado 28 de junio - 11:30 hrs</div>
-                    </div>
-                </div>
-            </article>
-            
-            <article class="event-visual-card">
-                <div class="event-visual-image">
-                    <img src="{{ url_for('static', filename='images/vigilia.jpg') }}" alt="Gran Vigilia ICTUE LAMPA con Pastor Franco Figueroa">
-                    <div class="event-visual-overlay">
-                        <h3>Gran Vigilia ICTUE LAMPA</h3>
-                        <p>Con invitado el Pastor Franco Figueroa</p>
-                        <div class="event-visual-date">viernes 4 julio</div>
-                    </div>
-                </div>
-            </article>
-        </div>
-    </div>
-</section>
 
 <!-- Horarios -->
 <section class="schedule">

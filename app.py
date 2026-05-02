@@ -78,6 +78,8 @@ def enviar_peticion():
     data     = request.get_json()
     nombre   = data.get('nombre', '').strip()
     peticion = data.get('peticion', '').strip()
+    telefono = data.get('telefono', '').strip()
+    llamada  = data.get('llamada', False)
 
     if not nombre or not peticion:
         return jsonify({'ok': False, 'error': 'Faltan datos'}), 400
@@ -85,11 +87,14 @@ def enviar_peticion():
     api_key = os.environ.get('BREVO_API_KEY', '')
     dest    = os.environ.get('MAIL_DEST', 'ictueoracion@gmail.com')
 
+    tel_linea     = f"Teléfono: {telefono}" if telefono else "Teléfono: No proporcionado"
+    llamada_linea = "Desea que lo llamen: Sí" if llamada else "Desea que lo llamen: No"
+
     payload = {
         "sender":      {"name": "ICTUE LAMPA Web", "email": dest},
         "to":          [{"email": dest}],
         "subject":     f"Peticion de oracion de {nombre} - ICTUE LAMPA",
-        "textContent": f"Nombre: {nombre}\n\nPeticion:\n{peticion}\n\n---\nEnviado desde la web de ICTUE LAMPA"
+        "textContent": f"Nombre: {nombre}\n\nPeticion:\n{peticion}\n\n{tel_linea}\n{llamada_linea}\n\n---\nEnviado desde la web de ICTUE LAMPA"
     }
 
     try:
