@@ -107,7 +107,7 @@ Este mensaje fue enviado automáticamente desde ictue-lampa-web.onrender.com
     msg.attach(MIMEText(cuerpo, 'plain', 'utf-8'))
 
     try:
-        with smtplib.SMTP('smtp-relay.brevo.com', 587) as server:
+        with smtplib.SMTP('smtp-relay.brevo.com', 587, timeout=30) as server:
             server.starttls()
             server.login(smtp_user, smtp_pass)
             server.sendmail(smtp_user, dest, msg.as_string())
