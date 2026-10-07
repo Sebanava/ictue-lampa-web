@@ -176,3 +176,78 @@ form.addEventListener("submit", async (event) => {
 });
 
 document.getElementById("year").textContent = String(new Date().getFullYear());
+
+const instagramTrack = document.getElementById("instagram-track");
+if (instagramTrack) {
+  const cards = [...instagramTrack.querySelectorAll(".instagram-card")];
+  const carousel = instagramTrack.closest(".instagram-carousel");
+  const previous = carousel.querySelector(".instagram-prev");
+  const next = carousel.querySelector(".instagram-next");
+  const status = carousel.querySelector(".instagram-status");
+  carousel.querySelector(".instagram-controls").hidden = false;
+
+  function cardStep() {
+    return cards.length > 1
+      ? cards[1].offsetLeft - cards[0].offsetLeft
+      : instagramTrack.clientWidth;
+  }
+  function updateInstagramControls() {
+    const step = cardStep();
+    const first = Math.max(0, Math.round(instagramTrack.scrollLeft / step));
+    const visible = Math.max(1, Math.round(instagramTrack.clientWidth / step));
+    previous.disabled = instagramTrack.scrollLeft <= 2;
+    next.disabled =
+      instagramTrack.scrollLeft >=
+      instagramTrack.scrollWidth - instagramTrack.clientWidth - 2;
+    const label =
+      visible === 1
+        ? `Publicación ${first + 1} de ${cards.length}`
+        : `Publicaciones ${first + 1}–${Math.min(cards.length, first + visible)} de ${cards.length}`;
+    if (status.textContent !== label) status.textContent = label;
+  }
+  function moveInstagram(direction) {
+    instagramTrack.scrollBy({
+      left: direction * cardStep(),
+      behavior: motionPreference.matches ? "instant" : "smooth",
+    });
+  }
+  previous.addEventListener("click", () => moveInstagram(-1));
+  next.addEventListener("click", () => moveInstagram(1));
+  instagramTrack.addEventListener("keydown", (event) => {
+    if (event.target !== instagramTrack) return;
+    if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
+      event.preventDefault();
+      moveInstagram(event.key === "ArrowRight" ? 1 : -1);
+    }
+  });
+  instagramTrack.addEventListener("scroll", updateInstagramControls, {
+    passive: true,
+  });
+  window.addEventListener("resize", updateInstagramControls, { passive: true });
+  updateInstagramControls();
+
+  function loadInstagramCard(card) {
+    const frame = card.querySelector(".instagram-frame");
+    if (!frame.dataset.src) return;
+    frame.src = frame.dataset.src;
+    delete frame.dataset.src;
+    frame.hidden = false;
+    card.querySelector(".instagram-preview").hidden = true;
+  }
+  if ("IntersectionObserver" in window) {
+    const embedObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            loadInstagramCard(entry.target);
+            embedObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { rootMargin: "200px 0px", threshold: 0.01 },
+    );
+    cards.forEach((card) => embedObserver.observe(card));
+  } else {
+    cards.forEach(loadInstagramCard);
+  }
+}
