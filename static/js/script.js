@@ -183,7 +183,15 @@ if (instagramTrack) {
   const carousel = instagramTrack.closest(".instagram-carousel");
   const previous = carousel.querySelector(".instagram-prev");
   const next = carousel.querySelector(".instagram-next");
+  const toggle = carousel.querySelector(".instagram-toggle");
   const status = carousel.querySelector(".instagram-status");
+  const hasVisibilityObserver = "IntersectionObserver" in window;
+  let autoplayEnabled = !motionPreference.matches;
+  let trackVisible = false;
+  let hovered = false;
+  let autoplayTimer = 0;
+  let animationFrame = 0;
+  let autoplayDirection = 1;
   carousel.querySelector(".instagram-controls").hidden = false;
 
   function cardStep() {
@@ -205,12 +213,118 @@ if (instagramTrack) {
         : `Publicaciones ${first + 1}–${Math.min(cards.length, first + visible)} de ${cards.length}`;
     if (status.textContent !== label) status.textContent = label;
   }
+  function updateAutoplayControl() {
+    toggle.hidden = motionPreference.matches;
+    toggle.textContent = autoplayEnabled ? "Pausar" : "Reproducir";
+    toggle.setAttribute(
+      "aria-label",
+      autoplayEnabled
+        ? "Pausar avance automático"
+        : "Reproducir publicaciones automáticamente",
+    );
+    status.setAttribute("aria-live", autoplayEnabled ? "off" : "polite");
+  }
+  function cancelInstagramAnimation() {
+    window.clearTimeout(autoplayTimer);
+    autoplayTimer = 0;
+    window.cancelAnimationFrame(animationFrame);
+    animationFrame = 0;
+    instagramTrack.classList.remove("is-auto-scrolling");
+  }
+  function canAutoplay() {
+    const focused = document.activeElement;
+    return (
+      autoplayEnabled &&
+      !motionPreference.matches &&
+      trackVisible &&
+      !document.hidden &&
+      !hovered &&
+      !(focused !== toggle && carousel.contains(focused)) &&
+      instagramTrack.scrollWidth - instagramTrack.clientWidth > 2
+    );
+  }
+  function scheduleAutoplay() {
+    window.clearTimeout(autoplayTimer);
+    autoplayTimer = 0;
+    if (!canAutoplay() || animationFrame) return;
+    autoplayTimer = window.setTimeout(advanceInstagram, 10000);
+  }
+  function stopAutoplay() {
+    autoplayEnabled = false;
+    cancelInstagramAnimation();
+    updateAutoplayControl();
+  }
+  function advanceInstagram() {
+    autoplayTimer = 0;
+    if (!canAutoplay()) return;
+    const maximum = instagramTrack.scrollWidth - instagramTrack.clientWidth;
+    const start = Math.max(0, Math.min(maximum, instagramTrack.scrollLeft));
+    if (start >= maximum - 2) autoplayDirection = -1;
+    else if (start <= 2) autoplayDirection = 1;
+    const destination = Math.max(
+      0,
+      Math.min(maximum, start + autoplayDirection * cardStep()),
+    );
+    let startedAt;
+    instagramTrack.classList.add("is-auto-scrolling");
+    function animate(timestamp) {
+      if (!canAutoplay()) {
+        cancelInstagramAnimation();
+        return;
+      }
+      if (startedAt === undefined) startedAt = timestamp;
+      const progress = Math.min(1, (timestamp - startedAt) / 1100);
+      const eased =
+        progress < 0.5
+          ? 4 * progress * progress * progress
+          : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+      instagramTrack.scrollTo({
+        left: start + (destination - start) * eased,
+        behavior: "instant",
+      });
+      if (progress < 1) animationFrame = window.requestAnimationFrame(animate);
+      else {
+        animationFrame = 0;
+        instagramTrack.classList.remove("is-auto-scrolling");
+        updateInstagramControls();
+        scheduleAutoplay();
+      }
+    }
+    animationFrame = window.requestAnimationFrame(animate);
+  }
+  function updateFallbackVisibility() {
+    const bounds = instagramTrack.getBoundingClientRect();
+    const visibleWidth = Math.max(
+      0,
+      Math.min(bounds.right, window.innerWidth) - Math.max(bounds.left, 0),
+    );
+    const visibleHeight = Math.max(
+      0,
+      Math.min(bounds.bottom, window.innerHeight) - Math.max(bounds.top, 0),
+    );
+    const visible =
+      bounds.width > 0 &&
+      bounds.height > 0 &&
+      (visibleWidth * visibleHeight) / (bounds.width * bounds.height) >= 0.2;
+    if (visible === trackVisible) return;
+    trackVisible = visible;
+    cancelInstagramAnimation();
+    scheduleAutoplay();
+  }
   function moveInstagram(direction) {
+    stopAutoplay();
     instagramTrack.scrollBy({
       left: direction * cardStep(),
       behavior: motionPreference.matches ? "instant" : "smooth",
     });
   }
+  toggle.addEventListener("click", () => {
+    if (motionPreference.matches) return;
+    autoplayEnabled = !autoplayEnabled;
+    cancelInstagramAnimation();
+    updateAutoplayControl();
+    scheduleAutoplay();
+  });
   previous.addEventListener("click", () => moveInstagram(-1));
   next.addEventListener("click", () => moveInstagram(1));
   instagramTrack.addEventListener("keydown", (event) => {
@@ -223,7 +337,68 @@ if (instagramTrack) {
   instagramTrack.addEventListener("scroll", updateInstagramControls, {
     passive: true,
   });
-  window.addEventListener("resize", updateInstagramControls, { passive: true });
+  ["pointerdown", "touchstart", "wheel"].forEach((eventName) => {
+    instagramTrack.addEventListener(eventName, stopAutoplay, { passive: true });
+  });
+  carousel.addEventListener("pointerenter", (event) => {
+    if (event.pointerType !== "mouse") return;
+    hovered = true;
+    cancelInstagramAnimation();
+  });
+  carousel.addEventListener("pointerleave", (event) => {
+    if (event.pointerType !== "mouse") return;
+    hovered = false;
+    scheduleAutoplay();
+  });
+  carousel.addEventListener("focusin", (event) => {
+    if (event.target !== toggle) stopAutoplay();
+  });
+  window.addEventListener("blur", () => {
+    window.setTimeout(() => {
+      if (instagramTrack.contains(document.activeElement)) stopAutoplay();
+    }, 0);
+  });
+  window.addEventListener(
+    "resize",
+    () => {
+      cancelInstagramAnimation();
+      updateInstagramControls();
+      if (!hasVisibilityObserver) updateFallbackVisibility();
+      scheduleAutoplay();
+    },
+    { passive: true },
+  );
+  document.addEventListener("visibilitychange", () => {
+    cancelInstagramAnimation();
+    scheduleAutoplay();
+  });
+  motionPreference.addEventListener("change", () => {
+    autoplayEnabled = false;
+    cancelInstagramAnimation();
+    updateAutoplayControl();
+  });
+  if (hasVisibilityObserver) {
+    const visibilityObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const visible =
+            entry.isIntersecting && entry.intersectionRatio >= 0.2;
+          if (visible === trackVisible) return;
+          trackVisible = visible;
+          cancelInstagramAnimation();
+          scheduleAutoplay();
+        });
+      },
+      { threshold: [0, 0.2] },
+    );
+    visibilityObserver.observe(instagramTrack);
+  } else {
+    window.addEventListener("scroll", updateFallbackVisibility, {
+      passive: true,
+    });
+    updateFallbackVisibility();
+  }
+  updateAutoplayControl();
   updateInstagramControls();
 
   function loadInstagramCard(card) {
