@@ -55,7 +55,7 @@
     />
     <link
       rel="stylesheet"
-      href="{{ url_for('static', filename='css/style.css', v='20261007e') }}"
+      href="{{ url_for('static', filename='css/style.css', v='20261007f') }}"
     />
     <script
       src="{{ url_for('static', filename='js/script.js', v='20261007e') }}"
@@ -372,6 +372,7 @@
             role="region"
             aria-roledescription="carrusel"
             aria-label="Publicaciones de ICTUE LAMPA"
+            data-reveal
           >
             <div
               class="instagram-track"
@@ -384,7 +385,6 @@
               <article
                 class="instagram-card"
                 aria-label="Publicación {{ number }} de 5"
-                data-reveal
               >
                 <div class="instagram-card-top">
                   <svg
