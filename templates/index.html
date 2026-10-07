@@ -55,10 +55,10 @@
     />
     <link
       rel="stylesheet"
-      href="{{ url_for('static', filename='css/style.css', v='20261007d') }}"
+      href="{{ url_for('static', filename='css/style.css', v='20261007e') }}"
     />
     <script
-      src="{{ url_for('static', filename='js/script.js', v='20261007d') }}"
+      src="{{ url_for('static', filename='js/script.js', v='20261007e') }}"
       defer
     ></script>
     <script type="application/ld+json">
@@ -147,11 +147,11 @@
       </section>
       <section class="welcome section" id="bienvenida">
         <div class="container welcome-grid">
-          <div data-reveal>
+          <div data-reveal="left">
             <p class="eyebrow">Bienvenido a casa</p>
             <h2>La fe nos une.<br />La esperanza<br /><em>nos mueve.</em></h2>
           </div>
-          <div class="welcome-copy" data-reveal>
+          <div class="welcome-copy" data-reveal="right">
             <p class="lead">
               Somos Iglesia Cristo Tu Única Esperanza. Una comunidad cristiana
               evangélica en Santiago, Lampa, que comparte el amor de Cristo con
@@ -296,7 +296,7 @@
       </section>
       <section class="pastors section" id="nosotros">
         <div class="container pastors-layout">
-          <div class="pastors-intro" data-reveal>
+          <div class="pastors-intro" data-reveal="left">
             <p class="eyebrow">Corazones al servicio</p>
             <h2>Conoce a<br />nuestros<br /><em>pastores.</em></h2>
             <p>
@@ -309,7 +309,7 @@
             >
           </div>
           <div class="pastors-grid">
-            <article class="pastor-card" data-reveal>
+            <article class="pastor-card" data-reveal="portrait">
               <div class="portrait">
                 <img
                   src="{{ url_for('static', filename='images/pastor.jpg.jpeg') }}"
@@ -326,7 +326,7 @@
                 congregación y la extensión del reino de Dios.
               </p>
             </article>
-            <article class="pastor-card" data-reveal>
+            <article class="pastor-card" data-reveal="portrait">
               <div class="portrait">
                 <img
                   src="{{ url_for('static', filename='images/pastora.jpg.jpeg') }}"
@@ -380,7 +380,12 @@
               tabindex="0"
               aria-label="Publicaciones de Instagram. Usa las flechas del teclado para avanzar."
             >
-              <article class="instagram-card" aria-label="Publicación 1 de 5">
+              {% macro church_post(code, number, photos, account) %}
+              <article
+                class="instagram-card"
+                aria-label="Publicación {{ number }} de 5"
+                data-reveal
+              >
                 <div class="instagram-card-top">
                   <svg
                     viewBox="0 0 24 24"
@@ -399,327 +404,157 @@
                       fill="currentColor"
                       stroke="none"
                     /></svg
-                  ><span>@ictuelampa</span
-                  ><span class="instagram-number">01</span>
+                  ><span>@{{ account }}</span
+                  ><span class="instagram-number">0{{ number }}</span>
                 </div>
-                <div class="instagram-preview">
-                  <span
-                    ><svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="1.6"
-                      aria-hidden="true"
-                      focusable="false"
-                    >
-                      <rect x="3" y="3" width="18" height="18" rx="5" />
-                      <circle cx="12" cy="12" r="4" />
-                      <circle
-                        cx="17.5"
-                        cy="6.5"
-                        r=".8"
-                        fill="currentColor"
-                        stroke="none"
-                      /></svg
-                  ></span>
-                  <p>Una mirada a nuestra comunidad</p>
-                  <a
-                    href="https://www.instagram.com/p/DeFYVBVH9b3/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Ver publicación 1 en Instagram"
-                    >Ver publicación en Instagram ↗︎</a
+                <div
+                  class="post-gallery"
+                  id="gallery-{{ code }}"
+                  data-gallery
+                  tabindex="0"
+                  role="group"
+                  aria-roledescription="galería de fotos"
+                  aria-label="Fotos de la publicación {{ number }} de ICTUE LAMPA"
+                >
+                  {% for photo in photos %}
+                  <img
+                    class="post-photo{% if loop.first %} is-active{% endif %}"
+                    {%
+                    if
+                    loop.first
+                    %}src{%
+                    else
+                    %}data-src{%
+                    endif
+                    %}="{{ url_for('static', filename=photo[0]) }}"
+                    width="{{ photo[1] }}"
+                    height="{{ photo[2] }}"
+                    alt="Foto {{ loop.index }} de la publicación {{ number }} de ICTUE LAMPA"
+                    aria-hidden="{{ 'false' if loop.first else 'true' }}"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  {% endfor %} {% if photos|length > 1 %}
+                  <button
+                    class="photo-prev"
+                    type="button"
+                    aria-label="Foto anterior de la publicación {{ number }}"
+                    aria-controls="gallery-{{ code }}"
+                  >
+                    <span aria-hidden="true">←</span>
+                  </button>
+                  <button
+                    class="photo-next"
+                    type="button"
+                    aria-label="Foto siguiente de la publicación {{ number }}"
+                    aria-controls="gallery-{{ code }}"
+                  >
+                    <span aria-hidden="true">→</span>
+                  </button>
+                  {% endif %}
+                  <span class="photo-count" aria-live="off" aria-atomic="true"
+                    >1 / {{ photos|length }}</span
                   >
                 </div>
-                <iframe
-                  class="instagram-frame"
-                  data-src="https://www.instagram.com/p/DeFYVBVH9b3/embed/"
-                  title="Publicación 1 de ICTUE LAMPA en Instagram"
-                  loading="lazy"
-                  referrerpolicy="strict-origin-when-cross-origin"
-                  hidden
-                ></iframe>
                 <a
                   class="instagram-post-link"
-                  href="https://www.instagram.com/p/DeFYVBVH9b3/"
+                  href="https://www.instagram.com/p/{{ code }}/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Abrir publicación 1 de ICTUE LAMPA en Instagram"
+                  aria-label="Abrir publicación {{ number }} de ICTUE LAMPA en Instagram"
                   >Abrir en Instagram <span aria-hidden="true">↗︎</span></a
                 >
               </article>
-              <article class="instagram-card" aria-label="Publicación 2 de 5">
-                <div class="instagram-card-top">
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.6"
-                    aria-hidden="true"
-                    focusable="false"
-                  >
-                    <rect x="3" y="3" width="18" height="18" rx="5" />
-                    <circle cx="12" cy="12" r="4" />
-                    <circle
-                      cx="17.5"
-                      cy="6.5"
-                      r=".8"
-                      fill="currentColor"
-                      stroke="none"
-                    /></svg
-                  ><span>@ictuelampa</span
-                  ><span class="instagram-number">02</span>
-                </div>
-                <div class="instagram-preview">
-                  <span
-                    ><svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="1.6"
-                      aria-hidden="true"
-                      focusable="false"
-                    >
-                      <rect x="3" y="3" width="18" height="18" rx="5" />
-                      <circle cx="12" cy="12" r="4" />
-                      <circle
-                        cx="17.5"
-                        cy="6.5"
-                        r=".8"
-                        fill="currentColor"
-                        stroke="none"
-                      /></svg
-                  ></span>
-                  <p>Una mirada a nuestra comunidad</p>
-                  <a
-                    href="https://www.instagram.com/p/DYdGtZKFZgy/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Ver publicación 2 en Instagram"
-                    >Ver publicación en Instagram ↗︎</a
-                  >
-                </div>
-                <iframe
-                  class="instagram-frame"
-                  data-src="https://www.instagram.com/p/DYdGtZKFZgy/embed/"
-                  title="Publicación 2 de ICTUE LAMPA en Instagram"
-                  loading="lazy"
-                  referrerpolicy="strict-origin-when-cross-origin"
-                  hidden
-                ></iframe>
-                <a
-                  class="instagram-post-link"
-                  href="https://www.instagram.com/p/DYdGtZKFZgy/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Abrir publicación 2 de ICTUE LAMPA en Instagram"
-                  >Abrir en Instagram <span aria-hidden="true">↗︎</span></a
-                >
-              </article>
-              <article class="instagram-card" aria-label="Publicación 3 de 5">
-                <div class="instagram-card-top">
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.6"
-                    aria-hidden="true"
-                    focusable="false"
-                  >
-                    <rect x="3" y="3" width="18" height="18" rx="5" />
-                    <circle cx="12" cy="12" r="4" />
-                    <circle
-                      cx="17.5"
-                      cy="6.5"
-                      r=".8"
-                      fill="currentColor"
-                      stroke="none"
-                    /></svg
-                  ><span>@ictuelampa</span
-                  ><span class="instagram-number">03</span>
-                </div>
-                <div class="instagram-preview">
-                  <span
-                    ><svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="1.6"
-                      aria-hidden="true"
-                      focusable="false"
-                    >
-                      <rect x="3" y="3" width="18" height="18" rx="5" />
-                      <circle cx="12" cy="12" r="4" />
-                      <circle
-                        cx="17.5"
-                        cy="6.5"
-                        r=".8"
-                        fill="currentColor"
-                        stroke="none"
-                      /></svg
-                  ></span>
-                  <p>Una mirada a nuestra comunidad</p>
-                  <a
-                    href="https://www.instagram.com/p/DYKbj9REZkP/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Ver publicación 3 en Instagram"
-                    >Ver publicación en Instagram ↗︎</a
-                  >
-                </div>
-                <iframe
-                  class="instagram-frame"
-                  data-src="https://www.instagram.com/p/DYKbj9REZkP/embed/"
-                  title="Publicación 3 de ICTUE LAMPA en Instagram"
-                  loading="lazy"
-                  referrerpolicy="strict-origin-when-cross-origin"
-                  hidden
-                ></iframe>
-                <a
-                  class="instagram-post-link"
-                  href="https://www.instagram.com/p/DYKbj9REZkP/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Abrir publicación 3 de ICTUE LAMPA en Instagram"
-                  >Abrir en Instagram <span aria-hidden="true">↗︎</span></a
-                >
-              </article>
-              <article class="instagram-card" aria-label="Publicación 4 de 5">
-                <div class="instagram-card-top">
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.6"
-                    aria-hidden="true"
-                    focusable="false"
-                  >
-                    <rect x="3" y="3" width="18" height="18" rx="5" />
-                    <circle cx="12" cy="12" r="4" />
-                    <circle
-                      cx="17.5"
-                      cy="6.5"
-                      r=".8"
-                      fill="currentColor"
-                      stroke="none"
-                    /></svg
-                  ><span>@ictuelampa</span
-                  ><span class="instagram-number">04</span>
-                </div>
-                <div class="instagram-preview">
-                  <span
-                    ><svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="1.6"
-                      aria-hidden="true"
-                      focusable="false"
-                    >
-                      <rect x="3" y="3" width="18" height="18" rx="5" />
-                      <circle cx="12" cy="12" r="4" />
-                      <circle
-                        cx="17.5"
-                        cy="6.5"
-                        r=".8"
-                        fill="currentColor"
-                        stroke="none"
-                      /></svg
-                  ></span>
-                  <p>Una mirada a nuestra comunidad</p>
-                  <a
-                    href="https://www.instagram.com/p/DXVB3agFQjs/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Ver publicación 4 en Instagram"
-                    >Ver publicación en Instagram ↗︎</a
-                  >
-                </div>
-                <iframe
-                  class="instagram-frame"
-                  data-src="https://www.instagram.com/p/DXVB3agFQjs/embed/"
-                  title="Publicación 4 de ICTUE LAMPA en Instagram"
-                  loading="lazy"
-                  referrerpolicy="strict-origin-when-cross-origin"
-                  hidden
-                ></iframe>
-                <a
-                  class="instagram-post-link"
-                  href="https://www.instagram.com/p/DXVB3agFQjs/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Abrir publicación 4 de ICTUE LAMPA en Instagram"
-                  >Abrir en Instagram <span aria-hidden="true">↗︎</span></a
-                >
-              </article>
-              <article class="instagram-card" aria-label="Publicación 5 de 5">
-                <div class="instagram-card-top">
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.6"
-                    aria-hidden="true"
-                    focusable="false"
-                  >
-                    <rect x="3" y="3" width="18" height="18" rx="5" />
-                    <circle cx="12" cy="12" r="4" />
-                    <circle
-                      cx="17.5"
-                      cy="6.5"
-                      r=".8"
-                      fill="currentColor"
-                      stroke="none"
-                    /></svg
-                  ><span>@ictuelampa</span
-                  ><span class="instagram-number">05</span>
-                </div>
-                <div class="instagram-preview">
-                  <span
-                    ><svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="1.6"
-                      aria-hidden="true"
-                      focusable="false"
-                    >
-                      <rect x="3" y="3" width="18" height="18" rx="5" />
-                      <circle cx="12" cy="12" r="4" />
-                      <circle
-                        cx="17.5"
-                        cy="6.5"
-                        r=".8"
-                        fill="currentColor"
-                        stroke="none"
-                      /></svg
-                  ></span>
-                  <p>Una mirada a nuestra comunidad</p>
-                  <a
-                    href="https://www.instagram.com/p/DatOcgxFYEJ/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="Ver publicación 5 en Instagram"
-                    >Ver publicación en Instagram ↗︎</a
-                  >
-                </div>
-                <iframe
-                  class="instagram-frame"
-                  data-src="https://www.instagram.com/p/DatOcgxFYEJ/embed/"
-                  title="Publicación 5 de ICTUE LAMPA en Instagram"
-                  loading="lazy"
-                  referrerpolicy="strict-origin-when-cross-origin"
-                  hidden
-                ></iframe>
-                <a
-                  class="instagram-post-link"
-                  href="https://www.instagram.com/p/DatOcgxFYEJ/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Abrir publicación 5 de ICTUE LAMPA en Instagram"
-                  >Abrir en Instagram <span aria-hidden="true">↗︎</span></a
-                >
-              </article>
+              {% endmacro %} {{ church_post('DeFYVBVH9b3', 1, [
+              ('images/instagram/DeFYVBVH9b3-01.webp', 1280, 960),
+              ('images/instagram/DeFYVBVH9b3-02.webp', 1280, 960),
+              ('images/instagram/DeFYVBVH9b3-03.webp', 1280, 960),
+              ('images/instagram/DeFYVBVH9b3-04.webp', 1280, 960),
+              ('images/instagram/DeFYVBVH9b3-05.webp', 1280, 960),
+              ('images/instagram/DeFYVBVH9b3-06.webp', 1280, 960),
+              ('images/instagram/DeFYVBVH9b3-07.webp', 1280, 960),
+              ('images/instagram/DeFYVBVH9b3-08.webp', 1280, 960),
+              ('images/instagram/DeFYVBVH9b3-09.webp', 1280, 960),
+              ('images/instagram/DeFYVBVH9b3-10.webp', 1280, 960),
+              ('images/instagram/DeFYVBVH9b3-11.webp', 1280, 960),
+              ('images/instagram/DeFYVBVH9b3-12.webp', 1280, 960),
+              ('images/instagram/DeFYVBVH9b3-13.webp', 1280, 960),
+              ('images/instagram/DeFYVBVH9b3-14.webp', 1280, 960),
+              ('images/instagram/DeFYVBVH9b3-15.webp', 1280, 960),
+              ('images/instagram/DeFYVBVH9b3-16.webp', 1280, 960) ],
+              'ictuelampa') }} {{ church_post('DYdGtZKFZgy', 2, [
+              ('images/instagram/DYdGtZKFZgy-01.webp', 1028, 685),
+              ('images/instagram/DYdGtZKFZgy-02.webp', 1080, 720),
+              ('images/instagram/DYdGtZKFZgy-03.webp', 986, 657),
+              ('images/instagram/DYdGtZKFZgy-04.webp', 1080, 720),
+              ('images/instagram/DYdGtZKFZgy-05.webp', 1080, 720),
+              ('images/instagram/DYdGtZKFZgy-06.webp', 1080, 720),
+              ('images/instagram/DYdGtZKFZgy-07.webp', 1080, 720),
+              ('images/instagram/DYdGtZKFZgy-08.webp', 1080, 720),
+              ('images/instagram/DYdGtZKFZgy-09.webp', 1080, 720),
+              ('images/instagram/DYdGtZKFZgy-10.webp', 1080, 720),
+              ('images/instagram/DYdGtZKFZgy-11.webp', 959, 639),
+              ('images/instagram/DYdGtZKFZgy-12.webp', 1000, 666),
+              ('images/instagram/DYdGtZKFZgy-13.webp', 1080, 720),
+              ('images/instagram/DYdGtZKFZgy-14.webp', 1080, 720),
+              ('images/instagram/DYdGtZKFZgy-15.webp', 1080, 720),
+              ('images/instagram/DYdGtZKFZgy-16.webp', 1080, 720),
+              ('images/instagram/DYdGtZKFZgy-17.webp', 1080, 720) ],
+              'ictuelampa') }} {{ church_post('DYKbj9REZkP', 3, [
+              ('images/instagram/DYKbj9REZkP-01.webp', 1280, 852),
+              ('images/instagram/DYKbj9REZkP-02.webp', 1280, 852),
+              ('images/instagram/DYKbj9REZkP-03.webp', 1280, 852),
+              ('images/instagram/DYKbj9REZkP-04.webp', 1280, 852),
+              ('images/instagram/DYKbj9REZkP-05.webp', 1280, 852),
+              ('images/instagram/DYKbj9REZkP-06.webp', 1280, 852),
+              ('images/instagram/DYKbj9REZkP-07.webp', 1280, 852),
+              ('images/instagram/DYKbj9REZkP-08.webp', 1280, 852),
+              ('images/instagram/DYKbj9REZkP-09.webp', 1280, 852),
+              ('images/instagram/DYKbj9REZkP-10.webp', 1280, 852),
+              ('images/instagram/DYKbj9REZkP-11.webp', 1280, 852),
+              ('images/instagram/DYKbj9REZkP-12.webp', 1280, 852),
+              ('images/instagram/DYKbj9REZkP-13.webp', 1280, 852),
+              ('images/instagram/DYKbj9REZkP-14.webp', 1280, 852),
+              ('images/instagram/DYKbj9REZkP-15.webp', 800, 533),
+              ('images/instagram/DYKbj9REZkP-16.webp', 1280, 852) ],
+              'ictuemujereslampa') }} {{ church_post('DXVB3agFQjs', 4, [
+              ('images/instagram/DXVB3agFQjs-01.webp', 1280, 853),
+              ('images/instagram/DXVB3agFQjs-02.webp', 1280, 670),
+              ('images/instagram/DXVB3agFQjs-03.webp', 1280, 853),
+              ('images/instagram/DXVB3agFQjs-04.webp', 1280, 960),
+              ('images/instagram/DXVB3agFQjs-05.webp', 1280, 853),
+              ('images/instagram/DXVB3agFQjs-06.webp', 1280, 853),
+              ('images/instagram/DXVB3agFQjs-07.webp', 1280, 853),
+              ('images/instagram/DXVB3agFQjs-08.webp', 1280, 853),
+              ('images/instagram/DXVB3agFQjs-09.webp', 1280, 853),
+              ('images/instagram/DXVB3agFQjs-10.webp', 1280, 853),
+              ('images/instagram/DXVB3agFQjs-11.webp', 1280, 853),
+              ('images/instagram/DXVB3agFQjs-12.webp', 1280, 852),
+              ('images/instagram/DXVB3agFQjs-13.webp', 1280, 852),
+              ('images/instagram/DXVB3agFQjs-14.webp', 1280, 852),
+              ('images/instagram/DXVB3agFQjs-15.webp', 1280, 852) ],
+              'ictuelampa') }} {{ church_post('DatOcgxFYEJ', 5, [
+              ('images/instagram/DatOcgxFYEJ-01.webp', 1280, 960),
+              ('images/instagram/DatOcgxFYEJ-02.webp', 1215, 911),
+              ('images/instagram/DatOcgxFYEJ-03.webp', 1215, 911),
+              ('images/instagram/DatOcgxFYEJ-04.webp', 1215, 911),
+              ('images/instagram/DatOcgxFYEJ-05.webp', 1071, 803),
+              ('images/instagram/DatOcgxFYEJ-06.webp', 1215, 911),
+              ('images/instagram/DatOcgxFYEJ-07.webp', 1150, 862),
+              ('images/instagram/DatOcgxFYEJ-08.webp', 1215, 911),
+              ('images/instagram/DatOcgxFYEJ-09.webp', 1215, 911),
+              ('images/instagram/DatOcgxFYEJ-10.webp', 1215, 911),
+              ('images/instagram/DatOcgxFYEJ-11.webp', 1215, 911),
+              ('images/instagram/DatOcgxFYEJ-12.webp', 1215, 911),
+              ('images/instagram/DatOcgxFYEJ-13.webp', 1215, 911),
+              ('images/instagram/DatOcgxFYEJ-14.webp', 1215, 911),
+              ('images/instagram/DatOcgxFYEJ-15.webp', 1056, 792),
+              ('images/instagram/DatOcgxFYEJ-16.webp', 1215, 911),
+              ('images/instagram/DatOcgxFYEJ-17.webp', 1215, 911),
+              ('images/instagram/DatOcgxFYEJ-18.webp', 1215, 911),
+              ('images/instagram/DatOcgxFYEJ-19.webp', 1215, 911),
+              ('images/instagram/DatOcgxFYEJ-20.webp', 1215, 911) ],
+              'ictuelampa') }}
             </div>
             <div class="instagram-navigation">
               <p class="instagram-status" aria-live="polite" aria-atomic="true">
@@ -729,10 +564,10 @@
                 <button
                   class="instagram-toggle"
                   type="button"
-                  aria-label="Pausar avance automático"
+                  aria-label="Pausar fotos"
                   aria-controls="instagram-track"
                 >
-                  Pausar
+                  Pausar fotos
                 </button>
                 <button
                   class="instagram-prev"
@@ -756,7 +591,7 @@
       </section>
       <section class="prayer section" id="oracion">
         <div class="container prayer-layout">
-          <div class="prayer-intro" data-reveal>
+          <div class="prayer-intro" data-reveal="left">
             <p class="eyebrow light">No tienes que caminar solo</p>
             <span class="prayer-symbol" aria-hidden="true">✧</span>
             <h2>Oremos<br /><em>por ti.</em></h2>
@@ -773,7 +608,7 @@
             id="prayer-form"
             action="{{ url_for('enviar_peticion') }}"
             method="post"
-            data-reveal
+            data-reveal="right"
           >
             <p class="form-title">Tu petición de oración</p>
             <p class="form-description">Estamos aquí para acompañarte.</p>
@@ -847,7 +682,7 @@
       </section>
       <section class="contact section" id="contacto">
         <div class="container contact-layout">
-          <div data-reveal>
+          <div data-reveal="left">
             <p class="eyebrow">Hay un lugar para ti</p>
             <h2>Te esperamos<br /><em>en Lampa.</em></h2>
             <p>
@@ -862,7 +697,7 @@
               >Cómo llegar a la iglesia <span aria-hidden="true">↗︎</span></a
             >
           </div>
-          <div class="contact-details" data-reveal>
+          <div class="contact-details" data-reveal="right">
             <div>
               <span class="eyebrow">Encuéntranos</span>
               <h3>Callejón Balmaceda 1087</h3>

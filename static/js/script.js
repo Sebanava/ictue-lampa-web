@@ -42,6 +42,14 @@ let framePending = false;
 function updateScroll() {
   framePending = false;
   header.classList.toggle("scrolled", window.scrollY > 20);
+  if (motionPreference.matches) {
+    header.style.removeProperty("--reading-progress");
+    return;
+  }
+  const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+  const progress =
+    scrollable > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollable)) : 0;
+  header.style.setProperty("--reading-progress", String(progress));
 }
 function requestScrollUpdate() {
   if (!framePending) {
@@ -186,13 +194,24 @@ if (instagramTrack) {
   const toggle = carousel.querySelector(".instagram-toggle");
   const status = carousel.querySelector(".instagram-status");
   const hasVisibilityObserver = "IntersectionObserver" in window;
+  const photoLoads = new WeakMap();
+  const galleries = [...instagramTrack.querySelectorAll(".post-gallery")].map(
+    (element) => ({
+      element,
+      photos: [...element.querySelectorAll(".post-photo")],
+      count: element.querySelector(".photo-count"),
+      index: 0,
+      visible: false,
+      hovered: false,
+      pending: false,
+      revision: 0,
+      timer: 0,
+      failed: new Set(),
+    }),
+  );
   let autoplayEnabled = !motionPreference.matches;
-  let trackVisible = false;
-  let hovered = false;
-  let autoplayTimer = 0;
-  let animationFrame = 0;
-  let autoplayDirection = 1;
   carousel.querySelector(".instagram-controls").hidden = false;
+  status.setAttribute("aria-live", "polite");
 
   function cardStep() {
     return cards.length > 1
@@ -200,7 +219,7 @@ if (instagramTrack) {
       : instagramTrack.clientWidth;
   }
   function updateInstagramControls() {
-    const step = cardStep();
+    const step = Math.max(1, cardStep());
     const first = Math.max(0, Math.round(instagramTrack.scrollLeft / step));
     const visible = Math.max(1, Math.round(instagramTrack.clientWidth / step));
     previous.disabled = instagramTrack.scrollLeft <= 2;
@@ -214,105 +233,164 @@ if (instagramTrack) {
     if (status.textContent !== label) status.textContent = label;
   }
   function updateAutoplayControl() {
-    toggle.hidden = motionPreference.matches;
-    toggle.textContent = autoplayEnabled ? "Pausar" : "Reproducir";
-    toggle.setAttribute(
-      "aria-label",
-      autoplayEnabled
-        ? "Pausar avance automático"
-        : "Reproducir publicaciones automáticamente",
-    );
-    status.setAttribute("aria-live", autoplayEnabled ? "off" : "polite");
+    toggle.hidden =
+      motionPreference.matches ||
+      !galleries.some((state) => state.photos.length > 1);
+    toggle.textContent = autoplayEnabled ? "Pausar fotos" : "Reproducir fotos";
+    toggle.setAttribute("aria-label", toggle.textContent);
+    toggle.removeAttribute("aria-pressed");
   }
-  function cancelInstagramAnimation() {
-    window.clearTimeout(autoplayTimer);
-    autoplayTimer = 0;
-    window.cancelAnimationFrame(animationFrame);
-    animationFrame = 0;
-    instagramTrack.classList.remove("is-auto-scrolling");
-  }
-  function canAutoplay() {
-    const focused = document.activeElement;
+  function canAutoplay(state) {
     return (
       autoplayEnabled &&
       !motionPreference.matches &&
-      trackVisible &&
       !document.hidden &&
-      !hovered &&
-      !(focused !== toggle && carousel.contains(focused)) &&
-      instagramTrack.scrollWidth - instagramTrack.clientWidth > 2
+      state.visible &&
+      !state.hovered &&
+      state.photos.length > 1
     );
   }
-  function scheduleAutoplay() {
-    window.clearTimeout(autoplayTimer);
-    autoplayTimer = 0;
-    if (!canAutoplay() || animationFrame) return;
-    autoplayTimer = window.setTimeout(advanceInstagram, 10000);
+  function clearPhotoTimer(state) {
+    window.clearTimeout(state.timer);
+    state.timer = 0;
   }
-  function stopAutoplay() {
+  function nextPhotoIndex(state, direction) {
+    for (let step = 1; step < state.photos.length; step += 1) {
+      const index =
+        (state.index + direction * step + state.photos.length) %
+        state.photos.length;
+      if (!state.failed.has(index)) return index;
+    }
+    return state.index;
+  }
+  function loadPhoto(photo) {
+    if (photo.complete && photo.naturalWidth > 0) return Promise.resolve();
+    if (photoLoads.has(photo)) return photoLoads.get(photo);
+    const loaded = new Promise((resolve, reject) => {
+      function removeListeners() {
+        photo.removeEventListener("load", onLoad);
+        photo.removeEventListener("error", onError);
+      }
+      async function onLoad() {
+        removeListeners();
+        if (typeof photo.decode === "function") {
+          try {
+            await photo.decode();
+          } catch {
+            if (!photo.naturalWidth) {
+              reject(new Error("La foto no está disponible"));
+              return;
+            }
+          }
+        }
+        resolve();
+      }
+      function onError() {
+        removeListeners();
+        reject(new Error("La foto no está disponible"));
+      }
+      photo.addEventListener("load", onLoad);
+      photo.addEventListener("error", onError);
+      photo.loading = "eager";
+      if (photo.dataset.src) {
+        photo.src = photo.dataset.src;
+        delete photo.dataset.src;
+      }
+      if (photo.complete) {
+        if (photo.naturalWidth > 0) onLoad();
+        else if (photo.getAttribute("src")) onError();
+      }
+    });
+    photoLoads.set(photo, loaded);
+    return loaded;
+  }
+  function preloadNextPhoto(state) {
+    if (!state.visible || state.photos.length < 2 || document.hidden) return;
+    const index = nextPhotoIndex(state, 1);
+    if (index === state.index) return;
+    loadPhoto(state.photos[index]).catch(() => state.failed.add(index));
+  }
+  function schedulePhotos(state) {
+    clearPhotoTimer(state);
+    if (!canAutoplay(state) || state.pending) return;
+    state.timer = window.setTimeout(() => {
+      state.timer = 0;
+      if (!canAutoplay(state)) return;
+      changePhoto(state, 1, false);
+    }, 2000);
+  }
+  function scheduleAllPhotos() {
+    galleries.forEach(schedulePhotos);
+  }
+  function pausePhotos() {
     autoplayEnabled = false;
-    cancelInstagramAnimation();
+    galleries.forEach(clearPhotoTimer);
     updateAutoplayControl();
   }
-  function advanceInstagram() {
-    autoplayTimer = 0;
-    if (!canAutoplay()) return;
-    const maximum = instagramTrack.scrollWidth - instagramTrack.clientWidth;
-    const start = Math.max(0, Math.min(maximum, instagramTrack.scrollLeft));
-    if (start >= maximum - 2) autoplayDirection = -1;
-    else if (start <= 2) autoplayDirection = 1;
-    const destination = Math.max(
-      0,
-      Math.min(maximum, start + autoplayDirection * cardStep()),
-    );
-    let startedAt;
-    instagramTrack.classList.add("is-auto-scrolling");
-    function animate(timestamp) {
-      if (!canAutoplay()) {
-        cancelInstagramAnimation();
+  function updatePhotoPresentation(state, manual = false) {
+    state.photos.forEach((photo, index) => {
+      const active = index === state.index;
+      photo.classList.toggle("is-active", active);
+      photo.setAttribute("aria-hidden", String(!active));
+    });
+    if (state.count) {
+      state.count.setAttribute("aria-live", manual ? "polite" : "off");
+      state.count.textContent = `${state.index + 1} / ${state.photos.length}`;
+    }
+  }
+  async function changePhoto(state, direction, manual = true) {
+    if (manual) pausePhotos();
+    const index = nextPhotoIndex(state, direction);
+    if (index === state.index) return;
+    clearPhotoTimer(state);
+    const revision = ++state.revision;
+    state.pending = true;
+    try {
+      await loadPhoto(state.photos[index]);
+      if (revision !== state.revision || (!manual && !canAutoplay(state)))
         return;
-      }
-      if (startedAt === undefined) startedAt = timestamp;
-      const progress = Math.min(1, (timestamp - startedAt) / 1100);
-      const eased =
-        progress < 0.5
-          ? 4 * progress * progress * progress
-          : 1 - Math.pow(-2 * progress + 2, 3) / 2;
-      instagramTrack.scrollTo({
-        left: start + (destination - start) * eased,
-        behavior: "instant",
-      });
-      if (progress < 1) animationFrame = window.requestAnimationFrame(animate);
-      else {
-        animationFrame = 0;
-        instagramTrack.classList.remove("is-auto-scrolling");
-        updateInstagramControls();
-        scheduleAutoplay();
+      state.index = index;
+      updatePhotoPresentation(state, manual);
+      preloadNextPhoto(state);
+    } catch {
+      state.failed.add(index);
+    } finally {
+      if (revision === state.revision) {
+        state.pending = false;
+        schedulePhotos(state);
       }
     }
-    animationFrame = window.requestAnimationFrame(animate);
+  }
+  function setGalleryVisibility(state, visible) {
+    if (visible === state.visible) return;
+    state.visible = visible;
+    if (visible) preloadNextPhoto(state);
+    schedulePhotos(state);
   }
   function updateFallbackVisibility() {
-    const bounds = instagramTrack.getBoundingClientRect();
-    const visibleWidth = Math.max(
-      0,
-      Math.min(bounds.right, window.innerWidth) - Math.max(bounds.left, 0),
-    );
-    const visibleHeight = Math.max(
-      0,
-      Math.min(bounds.bottom, window.innerHeight) - Math.max(bounds.top, 0),
-    );
-    const visible =
-      bounds.width > 0 &&
-      bounds.height > 0 &&
-      (visibleWidth * visibleHeight) / (bounds.width * bounds.height) >= 0.2;
-    if (visible === trackVisible) return;
-    trackVisible = visible;
-    cancelInstagramAnimation();
-    scheduleAutoplay();
+    const trackBounds = instagramTrack.getBoundingClientRect();
+    galleries.forEach((state) => {
+      const bounds = state.element.getBoundingClientRect();
+      const width = Math.max(
+        0,
+        Math.min(bounds.right, trackBounds.right, window.innerWidth) -
+          Math.max(bounds.left, trackBounds.left, 0),
+      );
+      const height = Math.max(
+        0,
+        Math.min(bounds.bottom, trackBounds.bottom, window.innerHeight) -
+          Math.max(bounds.top, trackBounds.top, 0),
+      );
+      const visible =
+        bounds.width > 0 &&
+        bounds.height > 0 &&
+        (width * height) / (bounds.width * bounds.height) >= 0.2;
+      if (visible) loadPhoto(state.photos[state.index]).catch(() => {});
+      setGalleryVisibility(state, visible);
+    });
   }
   function moveInstagram(direction) {
-    stopAutoplay();
+    pausePhotos();
     instagramTrack.scrollBy({
       left: direction * cardStep(),
       behavior: motionPreference.matches ? "instant" : "smooth",
@@ -321,9 +399,9 @@ if (instagramTrack) {
   toggle.addEventListener("click", () => {
     if (motionPreference.matches) return;
     autoplayEnabled = !autoplayEnabled;
-    cancelInstagramAnimation();
     updateAutoplayControl();
-    scheduleAutoplay();
+    if (autoplayEnabled) galleries.forEach(preloadNextPhoto);
+    scheduleAllPhotos();
   });
   previous.addEventListener("click", () => moveInstagram(-1));
   next.addEventListener("click", () => moveInstagram(1));
@@ -334,95 +412,139 @@ if (instagramTrack) {
       moveInstagram(event.key === "ArrowRight" ? 1 : -1);
     }
   });
-  instagramTrack.addEventListener("scroll", updateInstagramControls, {
-    passive: true,
-  });
-  ["pointerdown", "touchstart", "wheel"].forEach((eventName) => {
-    instagramTrack.addEventListener(eventName, stopAutoplay, { passive: true });
-  });
-  carousel.addEventListener("pointerenter", (event) => {
-    if (event.pointerType !== "mouse") return;
-    hovered = true;
-    cancelInstagramAnimation();
-  });
-  carousel.addEventListener("pointerleave", (event) => {
-    if (event.pointerType !== "mouse") return;
-    hovered = false;
-    scheduleAutoplay();
+  instagramTrack.addEventListener(
+    "scroll",
+    () => {
+      updateInstagramControls();
+      if (!hasVisibilityObserver) updateFallbackVisibility();
+    },
+    { passive: true },
+  );
+  ["pointerdown", "wheel"].forEach((eventName) => {
+    instagramTrack.addEventListener(eventName, pausePhotos, { passive: true });
   });
   carousel.addEventListener("focusin", (event) => {
-    if (event.target !== toggle) stopAutoplay();
+    if (event.target !== toggle) pausePhotos();
   });
-  window.addEventListener("blur", () => {
-    window.setTimeout(() => {
-      if (instagramTrack.contains(document.activeElement)) stopAutoplay();
-    }, 0);
+  galleries.forEach((state) => {
+    let gesture;
+    const gallery = state.element;
+    const previousPhoto = gallery.querySelector(".photo-prev");
+    const nextPhoto = gallery.querySelector(".photo-next");
+    state.index = Math.max(
+      0,
+      state.photos.findIndex((photo) => photo.classList.contains("is-active")),
+    );
+    updatePhotoPresentation(state);
+    previousPhoto?.addEventListener("click", () => changePhoto(state, -1));
+    nextPhoto?.addEventListener("click", () => changePhoto(state, 1));
+    gallery.addEventListener("keydown", (event) => {
+      if (event.target !== gallery) return;
+      if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
+        event.preventDefault();
+        event.stopPropagation();
+        changePhoto(state, event.key === "ArrowRight" ? 1 : -1);
+      }
+    });
+    gallery.addEventListener("pointerenter", (event) => {
+      if (event.pointerType !== "mouse") return;
+      state.hovered = true;
+      clearPhotoTimer(state);
+    });
+    gallery.addEventListener("pointerleave", (event) => {
+      if (event.pointerType !== "mouse") return;
+      state.hovered = false;
+      schedulePhotos(state);
+    });
+    gallery.addEventListener("pointerdown", (event) => {
+      if (
+        event.pointerType === "mouse" ||
+        !event.isPrimary ||
+        event.target.closest("button, a")
+      )
+        return;
+      gesture = { id: event.pointerId, x: event.clientX, y: event.clientY };
+      gallery.setPointerCapture(event.pointerId);
+    });
+    gallery.addEventListener("pointermove", (event) => {
+      if (!gesture || gesture.id !== event.pointerId) return;
+      const horizontal = Math.abs(event.clientX - gesture.x);
+      const vertical = Math.abs(event.clientY - gesture.y);
+      if (horizontal > 12 && horizontal > vertical * 1.4)
+        event.preventDefault();
+    });
+    gallery.addEventListener("pointerup", (event) => {
+      if (!gesture || gesture.id !== event.pointerId) return;
+      const horizontal = event.clientX - gesture.x;
+      const vertical = event.clientY - gesture.y;
+      gesture = undefined;
+      if (
+        Math.abs(horizontal) >= 40 &&
+        Math.abs(horizontal) > Math.abs(vertical) * 1.4
+      )
+        changePhoto(state, horizontal < 0 ? 1 : -1);
+    });
+    gallery.addEventListener("pointercancel", () => {
+      gesture = undefined;
+    });
   });
   window.addEventListener(
     "resize",
     () => {
-      cancelInstagramAnimation();
       updateInstagramControls();
       if (!hasVisibilityObserver) updateFallbackVisibility();
-      scheduleAutoplay();
+      scheduleAllPhotos();
     },
     { passive: true },
   );
   document.addEventListener("visibilitychange", () => {
-    cancelInstagramAnimation();
-    scheduleAutoplay();
+    if (!document.hidden) galleries.forEach(preloadNextPhoto);
+    scheduleAllPhotos();
   });
   motionPreference.addEventListener("change", () => {
     autoplayEnabled = false;
-    cancelInstagramAnimation();
+    galleries.forEach(clearPhotoTimer);
     updateAutoplayControl();
   });
   if (hasVisibilityObserver) {
     const visibilityObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          const visible =
-            entry.isIntersecting && entry.intersectionRatio >= 0.2;
-          if (visible === trackVisible) return;
-          trackVisible = visible;
-          cancelInstagramAnimation();
-          scheduleAutoplay();
+          const state = galleries.find((item) => item.element === entry.target);
+          setGalleryVisibility(
+            state,
+            entry.isIntersecting && entry.intersectionRatio >= 0.2,
+          );
         });
       },
       { threshold: [0, 0.2] },
     );
-    visibilityObserver.observe(instagramTrack);
+    const imageObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const state = galleries.find((item) => item.element === entry.target);
+          loadPhoto(state.photos[state.index]).catch(() => {});
+          imageObserver.unobserve(entry.target);
+        });
+      },
+      { rootMargin: "200px 0px", threshold: 0.01 },
+    );
+    galleries.forEach((state) => {
+      visibilityObserver.observe(state.element);
+      imageObserver.observe(state.element);
+    });
   } else {
     window.addEventListener("scroll", updateFallbackVisibility, {
       passive: true,
     });
     updateFallbackVisibility();
   }
+  if (
+    carousel.contains(document.activeElement) &&
+    document.activeElement !== toggle
+  )
+    pausePhotos();
   updateAutoplayControl();
   updateInstagramControls();
-
-  function loadInstagramCard(card) {
-    const frame = card.querySelector(".instagram-frame");
-    if (!frame.dataset.src) return;
-    frame.src = frame.dataset.src;
-    delete frame.dataset.src;
-    frame.hidden = false;
-    card.querySelector(".instagram-preview").hidden = true;
-  }
-  if ("IntersectionObserver" in window) {
-    const embedObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            loadInstagramCard(entry.target);
-            embedObserver.unobserve(entry.target);
-          }
-        });
-      },
-      { rootMargin: "200px 0px", threshold: 0.01 },
-    );
-    cards.forEach((card) => embedObserver.observe(card));
-  } else {
-    cards.forEach(loadInstagramCard);
-  }
 }

@@ -624,37 +624,87 @@ p + p {
   font-weight: 400;
   color: var(--muted);
 }
-.instagram-frame {
-  display: block;
+.post-gallery {
+  position: relative;
   width: 100%;
-  min-width: 0;
-  height: 560px;
-  border: 0;
-  background: #fff;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  isolation: isolate;
+  background: #efede8;
+  touch-action: pan-y;
 }
-.instagram-preview {
-  height: 560px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  padding: 28px;
-  text-align: center;
-  color: var(--muted);
-  background: #faf9f5;
-  font-size: 0.9rem;
+.post-gallery:focus-visible {
+  outline: 2px solid var(--red);
+  outline-offset: -3px;
 }
-.instagram-preview svg {
-  width: 48px;
-  height: 48px;
-  color: var(--red);
+.post-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  transform: scale(1.015);
+  pointer-events: none;
+  transition:
+    opacity 0.55s var(--ease),
+    transform 0.8s var(--ease);
 }
-.instagram-preview a {
-  font-size: 0.75rem;
-  text-decoration: underline;
-  text-underline-offset: 4px;
+.post-photo.is-active {
+  opacity: 1;
+  transform: scale(1);
+  z-index: 1;
 }
+.photo-prev,
+.photo-next {
+  position: absolute;
+  top: 50%;
+  z-index: 3;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid #17191918;
+  border-radius: 50%;
+  color: var(--ink);
+  background: #ffffffeb;
+  box-shadow: 0 2px 8px #17191910;
+  font-size: 1.1rem;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
+}
+.photo-prev {
+  left: 8px;
+}
+.photo-next {
+  right: 8px;
+}
+.photo-prev:hover,
+.photo-next:hover {
+  background: var(--red);
+  color: white;
+}
+.photo-count {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  z-index: 3;
+  padding: 4px 10px;
+  border-radius: 20px;
+  color: white;
+  background: #171919d9;
+  font-size: 0.65rem;
+}
+@media (prefers-reduced-motion: reduce) {
+  .post-photo {
+    transition: none;
+    transform: none;
+  }
+}
+
 .instagram-post-link {
   display: flex;
   justify-content: space-between;
@@ -698,9 +748,6 @@ p + p {
     color 0.2s,
     background-color 0.2s,
     border-color 0.2s;
-}
-.instagram-track.is-auto-scrolling {
-  scroll-snap-type: none;
 }
 .instagram-controls .instagram-toggle {
   width: auto;
@@ -996,14 +1043,65 @@ p + p {
 }
 .reveal-pending {
   opacity: 0;
-  transform: translateY(20px);
+  transform: translate3d(0, 24px, 0);
   transition:
-    opacity 0.65s var(--ease),
-    transform 0.65s var(--ease);
+    opacity 0.85s var(--ease) var(--reveal-delay, 0ms),
+    transform 0.85s var(--ease) var(--reveal-delay, 0ms);
+}
+.reveal-pending[data-reveal="left"] {
+  transform: translate3d(-28px, 18px, 0);
+}
+.reveal-pending[data-reveal="right"] {
+  transform: translate3d(28px, 18px, 0);
 }
 .reveal-pending.is-visible {
   opacity: 1;
   transform: none;
+}
+.schedule-card:nth-child(2),
+.ministry-card:nth-child(2),
+.pastor-card:nth-child(2) {
+  --reveal-delay: 100ms;
+}
+.schedule-card:nth-child(3),
+.ministry-card:nth-child(3) {
+  --reveal-delay: 200ms;
+}
+.ministry-card:nth-child(4) {
+  --reveal-delay: 300ms;
+}
+.pastor-card.reveal-pending .portrait img {
+  transform: scale(1.045);
+  transition: transform 1.1s var(--ease) var(--reveal-delay, 0ms);
+}
+.pastor-card.reveal-pending.is-visible .portrait img {
+  transform: scale(1);
+}
+@media (hover: hover) {
+  .pastor-card.is-visible:hover .portrait img {
+    transform: scale(1.025);
+  }
+}
+@media (max-width: 700px) {
+  .reveal-pending[data-reveal="left"],
+  .reveal-pending[data-reveal="right"] {
+    transform: translate3d(0, 18px, 0);
+  }
+  .reveal-pending.is-visible[data-reveal] {
+    transform: none;
+  }
+}
+.header::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--red);
+  transform: scaleX(var(--reading-progress, 0));
+  transform-origin: left;
+  pointer-events: none;
 }
 @media (min-width: 1000px) and (prefers-reduced-motion: no-preference) {
   .hero-content {
@@ -1286,6 +1384,12 @@ p + p {
   }
 }
 @media (prefers-reduced-motion: reduce) {
+  .header::after {
+    display: none;
+  }
+  .pastor-card .portrait img {
+    transform: none !important;
+  }
   html {
     scroll-behavior: auto;
   }
