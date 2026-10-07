@@ -39,6 +39,109 @@ window
   .addEventListener("change", () => closeMenu());
 
 let framePending = false;
+let sceneObserver;
+const activeScenes = new Set();
+const scrollScenes = [...document.querySelectorAll("[data-scroll]")].map(
+  (element) => ({
+    element,
+    type: element.dataset.scroll,
+    anchor:
+      element.dataset.scroll === "portrait"
+        ? element.closest(".portrait")
+        : element.dataset.scroll === "hero"
+          ? element
+          : element.dataset.scroll === "detail"
+            ? element.closest(".ministry-card, .radio-row, .prayer-intro") ||
+              element.parentElement
+            : element.parentElement,
+  }),
+);
+
+function updateSceneMotion() {
+  if (motionPreference.matches || document.hidden) return;
+  const viewport = window.innerHeight;
+  const compact = window.innerWidth <= 800;
+  const measurements = [...activeScenes].map((scene) => ({
+    scene,
+    bounds: scene.anchor.getBoundingClientRect(),
+  }));
+  measurements.forEach(({ scene, bounds }) => {
+    const progress = Math.min(
+      1,
+      Math.max(0, (viewport - bounds.top) / (viewport + bounds.height)),
+    );
+    if (scene.type === "hero") {
+      scene.element.style.setProperty(
+        "--hero-shift",
+        `${(progress * (compact ? 50 : 100)).toFixed(2)}px`,
+      );
+      return;
+    }
+    const distance =
+      scene.type === "portrait"
+        ? compact
+          ? 12
+          : 28
+        : scene.type === "detail"
+          ? compact
+            ? 16
+            : 28
+          : compact
+            ? 36
+            : 64;
+    scene.element.style.setProperty(
+      "--scroll-shift",
+      `${((0.5 - progress) * distance).toFixed(2)}px`,
+    );
+    if (scene.type === "portrait") {
+      scene.element.style.setProperty(
+        "--scroll-zoom",
+        (1.115 - progress * 0.035).toFixed(4),
+      );
+    } else if (scene.type === "heading") {
+      scene.element.style.setProperty(
+        "--scroll-zoom",
+        (0.96 + Math.min(1, progress * 1.8) * 0.04).toFixed(4),
+      );
+    }
+  });
+}
+
+function configureSceneMotion() {
+  sceneObserver?.disconnect();
+  activeScenes.clear();
+  document.documentElement.classList.toggle(
+    "scroll-motion",
+    !motionPreference.matches,
+  );
+  scrollScenes.forEach(({ element }) => {
+    ["--scroll-shift", "--scroll-zoom", "--hero-shift"].forEach((property) =>
+      element.style.removeProperty(property),
+    );
+  });
+  if (motionPreference.matches) return;
+  if ("IntersectionObserver" in window) {
+    const scenesByElement = new Map(
+      scrollScenes.map((scene) => [scene.element, scene]),
+    );
+    sceneObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const scene = scenesByElement.get(entry.target);
+          if (entry.isIntersecting) activeScenes.add(scene);
+          else activeScenes.delete(scene);
+        });
+        requestScrollUpdate();
+      },
+      { rootMargin: "160px 0px", threshold: 0 },
+    );
+    scrollScenes.forEach((scene) => sceneObserver.observe(scene.element));
+  } else {
+    scrollScenes.forEach((scene) => activeScenes.add(scene));
+  }
+  requestScrollUpdate();
+}
+
 function updateScroll() {
   framePending = false;
   header.classList.toggle("scrolled", window.scrollY > 20);
@@ -50,6 +153,7 @@ function updateScroll() {
   const progress =
     scrollable > 0 ? Math.min(1, Math.max(0, window.scrollY / scrollable)) : 0;
   header.style.setProperty("--reading-progress", String(progress));
+  updateSceneMotion();
 }
 function requestScrollUpdate() {
   if (!framePending) {
@@ -59,6 +163,16 @@ function requestScrollUpdate() {
 }
 window.addEventListener("scroll", requestScrollUpdate, { passive: true });
 window.addEventListener("resize", requestScrollUpdate, { passive: true });
+document.addEventListener("visibilitychange", requestScrollUpdate);
+document.addEventListener("transitionend", (event) => {
+  if (
+    event.propertyName === "transform" &&
+    event.target.matches("[data-reveal]")
+  )
+    requestScrollUpdate();
+});
+configureSceneMotion();
+motionPreference.addEventListener("change", configureSceneMotion);
 updateScroll();
 
 let revealObserver;
@@ -79,7 +193,10 @@ function configureReveals() {
         }
       });
     },
-    { threshold: 0.08 },
+    {
+      rootMargin: `0px 0px -${Math.min(96, Math.round(window.innerHeight * 0.12))}px 0px`,
+      threshold: 0.08,
+    },
   );
   revealElements.forEach((element) => {
     if (!element.classList.contains("is-visible")) {

@@ -55,10 +55,10 @@
     />
     <link
       rel="stylesheet"
-      href="{{ url_for('static', filename='css/style.css', v='20261007f') }}"
+      href="{{ url_for('static', filename='css/style.css', v='20261007g') }}"
     />
     <script
-      src="{{ url_for('static', filename='js/script.js', v='20261007e') }}"
+      src="{{ url_for('static', filename='js/script.js', v='20261007g') }}"
       defer
     ></script>
     <script type="application/ld+json">
@@ -120,12 +120,19 @@
       </nav>
     </header>
     <main id="contenido">
-      <section class="hero" id="inicio" aria-labelledby="hero-title">
+      <section
+        class="hero"
+        id="inicio"
+        aria-labelledby="hero-title"
+        data-scroll="hero"
+      >
         <div class="container hero-content">
           <p class="eyebrow light">
             <span class="red-dot"></span> Una comunidad de fe en Lampa
           </p>
-          <h1 id="hero-title">Cristo, tu única<br /><em>esperanza.</em></h1>
+          <h1 id="hero-title" data-scroll="heading">
+            Cristo, tu única<br /><em>esperanza.</em>
+          </h1>
           <p class="hero-description">
             Un lugar para encontrarnos, crecer en la fe y experimentar juntos el
             amor de Cristo. Bienvenido a ICTUE LAMPA.
@@ -149,7 +156,9 @@
         <div class="container welcome-grid">
           <div data-reveal="left">
             <p class="eyebrow">Bienvenido a casa</p>
-            <h2>La fe nos une.<br />La esperanza<br /><em>nos mueve.</em></h2>
+            <h2 data-scroll="heading">
+              La fe nos une.<br />La esperanza<br /><em>nos mueve.</em>
+            </h2>
           </div>
           <div class="welcome-copy" data-reveal="right">
             <p class="lead">
@@ -207,7 +216,9 @@
             </article>
           </div>
           <div class="radio-row" data-reveal>
-            <span class="radio-symbol" aria-hidden="true">◎</span>
+            <span class="radio-symbol" aria-hidden="true" data-scroll="detail"
+              >◎</span
+            >
             <div>
               <strong>La esperanza también se escucha</strong>
               <p>Programa radial · Radio 97.1 FM</p>
@@ -221,7 +232,9 @@
           <div class="section-heading" data-reveal>
             <div>
               <p class="eyebrow">Crezcamos juntos</p>
-              <h2>Una fe que<br /><em>se vive y comparte.</em></h2>
+              <h2 data-scroll="heading">
+                Una fe que<br /><em>se vive y comparte.</em>
+              </h2>
             </div>
             <p>
               Conoce los espacios de servicio y<br />acompañamiento de ICTUE
@@ -230,7 +243,7 @@
           </div>
           <div class="ministry-grid">
             <a class="ministry-card" href="#contacto" data-reveal
-              ><span class="ministry-icon" aria-hidden="true">⌂</span
+              ><span class="ministry-icon" aria-hidden="true" data-scroll="detail">⌂</span
               ><span class="card-index">01</span>
               <h3>Nuestro templo</h3>
               <p>
@@ -247,7 +260,7 @@
               target="_blank"
               rel="noopener noreferrer"
               data-reveal
-              ><span class="ministry-icon" aria-hidden="true">✳</span
+              ><span class="ministry-icon" aria-hidden="true" data-scroll="detail">✳</span
               ><span class="card-index">02</span>
               <h3>Programa Plantados</h3>
               <p>
@@ -264,7 +277,7 @@
               target="_blank"
               rel="noopener noreferrer"
               data-reveal
-              ><span class="ministry-icon" aria-hidden="true">♡</span
+              ><span class="ministry-icon" aria-hidden="true" data-scroll="detail">♡</span
               ><span class="card-index">03</span>
               <h3>Matrimonios cristianos</h3>
               <p>
@@ -276,7 +289,7 @@
               ></a
             >
             <a class="ministry-card" href="#oracion" data-reveal
-              ><span class="ministry-icon" aria-hidden="true">✧</span
+              ><span class="ministry-icon" aria-hidden="true" data-scroll="detail">✧</span
               ><span class="card-index">04</span>
               <h3>Ministerio de oración</h3>
               <p>
@@ -298,7 +311,7 @@
         <div class="container pastors-layout">
           <div class="pastors-intro" data-reveal="left">
             <p class="eyebrow">Corazones al servicio</p>
-            <h2>Conoce a<br />nuestros<br /><em>pastores.</em></h2>
+            <h2 data-scroll="heading">Conoce a<br />nuestros<br /><em>pastores.</em></h2>
             <p>
               Un liderazgo comprometido con el cuidado de las familias, el
               crecimiento de nuestra congregación y la extensión del reino de
@@ -314,6 +327,7 @@
                 <img
                   src="{{ url_for('static', filename='images/pastor.jpg.jpeg') }}"
                   alt="Pastor Eduardo Navarrete"
+                  data-scroll="portrait"
                   width="853"
                   height="1280"
                   loading="lazy"
@@ -331,6 +345,7 @@
                 <img
                   src="{{ url_for('static', filename='images/pastora.jpg.jpeg') }}"
                   alt="Pastora Mireya Pardo"
+                  data-scroll="portrait"
                   width="853"
                   height="1280"
                   loading="lazy"
@@ -355,7 +370,7 @@
           <div class="section-heading" data-reveal>
             <div>
               <p class="eyebrow">Nuestra iglesia en Instagram</p>
-              <h2 id="instagram-title">
+              <h2 id="instagram-title" data-scroll="heading">
                 Conoce la vida<br /><em>de nuestra comunidad.</em>
               </h2>
             </div>
@@ -593,7 +608,7 @@
         <div class="container prayer-layout">
           <div class="prayer-intro" data-reveal="left">
             <p class="eyebrow light">No tienes que caminar solo</p>
-            <span class="prayer-symbol" aria-hidden="true">✧</span>
+            <span class="prayer-symbol" aria-hidden="true" data-scroll="detail">✧</span>
             <h2>Oremos<br /><em>por ti.</em></h2>
             <p>
               Cuéntanos tu necesidad. Nuestro equipo de intercesión llevará tu
