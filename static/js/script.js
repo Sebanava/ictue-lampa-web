@@ -4,8 +4,6 @@ const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
 const header = document.querySelector(".header");
 const menuToggle = document.querySelector(".menu-toggle");
 const menu = document.querySelector(".nav-menu");
-const hero = document.querySelector(".hero");
-const heroPhoto = document.querySelector(".hero-photo");
 const form = document.getElementById("prayer-form");
 const message = document.getElementById("oracion-mensaje");
 const phone = document.getElementById("oracion-telefono");
@@ -44,17 +42,6 @@ let framePending = false;
 function updateScroll() {
   framePending = false;
   header.classList.toggle("scrolled", window.scrollY > 20);
-  if (motionPreference.matches || window.innerWidth <= 800) {
-    heroPhoto.style.removeProperty("--parallax");
-    return;
-  }
-  const rect = hero.getBoundingClientRect();
-  if (rect.bottom > 0 && rect.top < window.innerHeight) {
-    heroPhoto.style.setProperty(
-      "--parallax",
-      `${Math.min(55, Math.max(0, -rect.top * 0.09))}px`,
-    );
-  }
 }
 function requestScrollUpdate() {
   if (!framePending) {
