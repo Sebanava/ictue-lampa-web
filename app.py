@@ -21,31 +21,31 @@ def sitemap():
     sitemap_xml = """<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-        <loc>https://ictue-lampa-web.onrender.com/</loc>
+        <loc>https://www.ictuelampa.cl/</loc>
         <lastmod>2025-06-18</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
     </url>
     <url>
-        <loc>https://ictue-lampa-web.onrender.com/#nosotros</loc>
+        <loc>https://www.ictuelampa.cl/#nosotros</loc>
         <lastmod>2025-06-18</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://ictue-lampa-web.onrender.com/#servicios</loc>
+        <loc>https://www.ictuelampa.cl/#servicios</loc>
         <lastmod>2025-06-18</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.9</priority>
     </url>
     <url>
-        <loc>https://ictue-lampa-web.onrender.com/#eventos</loc>
+        <loc>https://www.ictuelampa.cl/#eventos</loc>
         <lastmod>2025-06-18</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.7</priority>
     </url>
     <url>
-        <loc>https://ictue-lampa-web.onrender.com/#contacto</loc>
+        <loc>https://www.ictuelampa.cl/#contacto</loc>
         <lastmod>2025-06-18</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
@@ -62,7 +62,7 @@ def robots():
     """Archivo robots.txt para indicar a Google qué indexar"""
     robots_txt = """User-agent: *
 Allow: /
-Sitemap: https://ictue-lampa-web.onrender.com/sitemap.xml
+Sitemap: https://www.ictuelampa.cl/sitemap.xml
 
 # ICTUE LAMPA - Cristo Tu Única Esperanza
 # Iglesia cristiana en Santiago, Lampa

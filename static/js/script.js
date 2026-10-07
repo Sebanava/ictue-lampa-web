@@ -1,113 +1,191 @@
-// Intersection Observer para animaciones
-const observerOptions = { threshold: 0.12, rootMargin: '0px 0px -60px 0px' };
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
+"use strict";
+
+const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+const header = document.querySelector(".header");
+const menuToggle = document.querySelector(".menu-toggle");
+const menu = document.querySelector(".nav-menu");
+const hero = document.querySelector(".hero");
+const heroPhoto = document.querySelector(".hero-photo");
+const form = document.getElementById("prayer-form");
+const message = document.getElementById("oracion-mensaje");
+const phone = document.getElementById("oracion-telefono");
+const call = document.getElementById("oracion-llamada");
+const petition = document.getElementById("oracion-peticion");
+const counter = document.getElementById("peticion-count");
+
+header.classList.add("js-nav");
+menuToggle.hidden = false;
+
+function closeMenu(restoreFocus = false) {
+  menu.classList.remove("open");
+  menuToggle.setAttribute("aria-expanded", "false");
+  if (restoreFocus) menuToggle.focus();
+}
+
+menuToggle.addEventListener("click", () => {
+  const isOpen = menu.classList.toggle("open");
+  menuToggle.setAttribute("aria-expanded", String(isOpen));
+});
+menu.addEventListener("click", (event) => {
+  if (event.target.closest("a")) closeMenu();
+});
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && menu.classList.contains("open"))
+    closeMenu(true);
+});
+document.addEventListener("click", (event) => {
+  if (!header.contains(event.target)) closeMenu();
+});
+window
+  .matchMedia("(min-width: 801px)")
+  .addEventListener("change", () => closeMenu());
+
+let framePending = false;
+function updateScroll() {
+  framePending = false;
+  header.classList.toggle("scrolled", window.scrollY > 20);
+  if (motionPreference.matches || window.innerWidth <= 800) {
+    heroPhoto.style.removeProperty("--parallax");
+    return;
+  }
+  const rect = hero.getBoundingClientRect();
+  if (rect.bottom > 0 && rect.top < window.innerHeight) {
+    heroPhoto.style.setProperty(
+      "--parallax",
+      `${Math.min(55, Math.max(0, -rect.top * 0.09))}px`,
+    );
+  }
+}
+function requestScrollUpdate() {
+  if (!framePending) {
+    framePending = true;
+    window.requestAnimationFrame(updateScroll);
+  }
+}
+window.addEventListener("scroll", requestScrollUpdate, { passive: true });
+window.addEventListener("resize", requestScrollUpdate, { passive: true });
+updateScroll();
+
+let revealObserver;
+const revealElements = document.querySelectorAll("[data-reveal]");
+function configureReveals() {
+  if (revealObserver) revealObserver.disconnect();
+  revealElements.forEach((element) =>
+    element.classList.remove("reveal-pending"),
+  );
+  updateScroll();
+  if (motionPreference.matches || !("IntersectionObserver" in window)) return;
+  revealObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
         if (entry.isIntersecting) {
-            entry.target.classList.add('animate-in');
-            observer.unobserve(entry.target);
+          entry.target.classList.add("is-visible");
+          revealObserver.unobserve(entry.target);
         }
-    });
-}, observerOptions);
+      });
+    },
+    { threshold: 0.08 },
+  );
+  revealElements.forEach((element) => {
+    if (!element.classList.contains("is-visible")) {
+      element.classList.add("reveal-pending");
+      revealObserver.observe(element);
+    }
+  });
+}
+configureReveals();
+motionPreference.addEventListener("change", configureReveals);
 
-document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.service-card').forEach((card, index) => {
-        card.style.animationDelay = `${index * 0.15}s`;
-        observer.observe(card);
-    });
-    document.querySelectorAll('.pastor-card').forEach((card, index) => {
-        card.style.animationDelay = `${index * 0.2}s`;
-        observer.observe(card);
-    });
-
-    // Navegación suave
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                const headerHeight = document.querySelector('.header').offsetHeight;
-                window.scrollTo({ top: target.offsetTop - headerHeight, behavior: 'smooth' });
-            }
+if ("IntersectionObserver" in window) {
+  const sectionObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        menu.querySelectorAll("a").forEach((link) => {
+          if (link.hash === `#${entry.target.id}`)
+            link.setAttribute("aria-current", "location");
+          else link.removeAttribute("aria-current");
         });
-    });
+      });
+    },
+    { rootMargin: "-20% 0px -55% 0px", threshold: 0 },
+  );
+  document
+    .querySelectorAll("main section[id]")
+    .forEach((section) => sectionObserver.observe(section));
+}
 
-    // Header scroll effect
-    window.addEventListener('scroll', () => {
-        const header = document.querySelector('.header');
-        if (window.pageYOffset > 100) {
-            header.style.background = 'rgba(255, 255, 255, 0.98)';
-            header.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
-        } else {
-            header.style.background = 'rgba(255, 255, 255, 0.95)';
-            header.style.boxShadow = 'none';
-        }
-    });
+function updateCounter() {
+  counter.textContent = `${petition.value.length} / 500 caracteres`;
+}
+petition.addEventListener("input", updateCounter);
 
-    // Parallax suave en hero
-    window.addEventListener('scroll', () => {
-        const decoration = document.querySelector('.hero-decoration');
-        if (decoration) {
-            decoration.style.transform = `translateY(${window.pageYOffset * 0.3}px) rotate(${window.pageYOffset * 0.02}deg)`;
-        }
-    });
+function updatePhoneRequirement() {
+  phone.required = call.checked;
+  phone.setCustomValidity("");
+}
+call.addEventListener("change", updatePhoneRequirement);
+phone.addEventListener("input", () => phone.setCustomValidity(""));
+updatePhoneRequirement();
 
-    // Ripple en botones
-    document.querySelectorAll('.cta-btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            const ripple = document.createElement('span');
-            ripple.classList.add('ripple');
-            const rect = this.getBoundingClientRect();
-            ripple.style.left = `${e.clientX - rect.left}px`;
-            ripple.style.top = `${e.clientY - rect.top}px`;
-            this.appendChild(ripple);
-            setTimeout(() => ripple.remove(), 700);
-        });
+function showMessage(text, success = false) {
+  message.textContent = text;
+  message.className = `form-message ${success ? "success" : "error"}`;
+  message.hidden = false;
+}
+
+form.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const button = form.querySelector('button[type="submit"]');
+  if (button.disabled) return;
+  const nombre = document.getElementById("oracion-nombre").value.trim();
+  const peticion = petition.value.trim();
+  const telefono = phone.value.trim();
+  const llamada = call.checked;
+  if (!nombre || !peticion) {
+    showMessage("Escribe tu nombre y tu petición para poder enviarla.");
+    (!nombre ? document.getElementById("oracion-nombre") : petition).focus();
+    return;
+  }
+  if (llamada && !telefono) {
+    phone.setCustomValidity("Escribe tu teléfono si deseas que te llamemos.");
+    phone.reportValidity();
+    return;
+  }
+  message.hidden = true;
+  button.disabled = true;
+  button.textContent = "Enviando petición…";
+  form.setAttribute("aria-busy", "true");
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), 25000);
+  try {
+    const response = await fetch(form.getAttribute("action"), {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ nombre, peticion, telefono, llamada }),
+      signal: controller.signal,
     });
+    const data = await response.json();
+    if (!response.ok || data.ok !== true) throw new Error("No se pudo enviar");
+    form.reset();
+    updateCounter();
+    updatePhoneRequirement();
+    showMessage(
+      "¡Petición enviada! Nuestro equipo de intercesión orará por ti.",
+      true,
+    );
+  } catch (error) {
+    showMessage(
+      error.name === "AbortError"
+        ? "El envío tardó más de lo esperado y no pudimos confirmar la recepción. Puedes contactarnos por correo."
+        : "No pudimos enviar tu petición. Tus datos siguen aquí; inténtalo de nuevo o escríbenos a ictueoracion@gmail.com.",
+    );
+  } finally {
+    window.clearTimeout(timeout);
+    button.disabled = false;
+    button.textContent = "Enviar petición ↗︎";
+    form.removeAttribute("aria-busy");
+  }
 });
 
-// ================================
-// PETICIÓN DE ORACIÓN - CORREO
-// ================================
-async function enviarPeticion() {
-    const nombre   = document.getElementById('oracion-nombre').value.trim();
-    const peticion = document.getElementById('oracion-peticion').value.trim();
-    const telefono = document.getElementById('oracion-telefono').value.trim();
-    const llamada  = document.getElementById('oracion-llamada').checked;
-    const mensaje  = document.getElementById('oracion-mensaje');
-
-    if (!nombre) { alert('Por favor ingresa tu nombre 😊'); return; }
-    if (!peticion) { alert('Por favor escribe tu petición de oración 🙏'); return; }
-
-    const btn = document.querySelector('.oracion-btn');
-    btn.disabled = true;
-    btn.innerHTML = '⏳ Enviando...';
-
-    try {
-        const res = await fetch('/enviar-peticion', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nombre, peticion, telefono, llamada })
-        });
-        const data = await res.json();
-
-        if (data.ok) {
-            mensaje.className = 'oracion-mensaje oracion-ok';
-            mensaje.textContent = '🙏 ¡Petición enviada! Nuestro equipo de intercesión orará por ti.';
-            document.getElementById('oracion-nombre').value = '';
-            document.getElementById('oracion-peticion').value = '';
-            document.getElementById('oracion-telefono').value = '';
-            document.getElementById('oracion-llamada').checked = false;
-        } else {
-            mensaje.className = 'oracion-mensaje oracion-error';
-            mensaje.textContent = '❌ Hubo un error al enviar. Inténtalo de nuevo.';
-        }
-    } catch {
-        mensaje.className = 'oracion-mensaje oracion-error';
-        mensaje.textContent = '❌ Hubo un error al enviar. Inténtalo de nuevo.';
-    } finally {
-        btn.disabled = false;
-        btn.innerHTML = '🙏 Enviar Petición de Oración';
-        mensaje.style.display = 'block';
-        setTimeout(() => { mensaje.style.display = 'none'; }, 8000);
-    }
-}
+document.getElementById("year").textContent = String(new Date().getFullYear());

@@ -1,434 +1,602 @@
-<!DOCTYPE html>
-
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-```
-<!-- Google Search Console -->
-<meta name="google-site-verification" content="wuOolfViVCsT_KJvxVN3o9vhHn2nxzzlwlgy5YNcI3U" />
-
-<!-- SEO Meta Tags -->
-<title>ICTUE LAMPA - Iglesia Cristo Tu Única Esperanza en Santiago, Lampa</title>
-<meta name="description" content="ICTUE LAMPA - Iglesia Cristo Tu Única Esperanza en Santiago, Lampa. Servicios religiosos, matrimonios cristianos, oración y comunidad de fe. Ubicados en Callejón Balmaceda 1087.">
-<meta name="keywords" content="ICTUE, LAMPA, iglesia, cristo, única esperanza, Santiago, Lampa, servicios religiosos, matrimonios cristianos, oración, pastor Eduardo Navarrete, pastora Mireya Pardo">
-<meta name="author" content="ICTUE LAMPA">
-<meta name="robots" content="index, follow">
-
-<!-- Open Graph para redes sociales -->
-<meta property="og:title" content="ICTUE LAMPA - Cristo Tu Única Esperanza">
-<meta property="og:description" content="Iglesia cristiana en Santiago, Lampa. Servicios religiosos, matrimonios, oración y comunidad de fe. ¡Te esperamos!">
-<meta property="og:image" content="{{ url_for('static', filename='images/logo.png.jpeg') }}">
-<meta property="og:url" content="https://ictue-lampa-web.onrender.com/">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="ICTUE LAMPA">
-
-<!-- Twitter Cards -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="ICTUE LAMPA - Cristo Tu Única Esperanza">
-<meta name="twitter:description" content="Iglesia cristiana en Santiago, Lampa. Servicios religiosos, matrimonios, oración y comunidad de fe.">
-<meta name="twitter:image" content="{{ url_for('static', filename='images/logo.png.jpeg') }}">
-
-<!-- Canonical URL -->
-<link rel="canonical" href="https://ictue-lampa-web.onrender.com/">
-
-<!-- Favicons -->
-<link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/logo.png.jpeg') }}">
-<!-- PWA Meta Tags -->
-<link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
-<meta name="theme-color" content="#007bff">
-
-<!-- iOS Meta Tags -->
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="ICTUE LAMPA">
-<meta name="apple-touch-fullscreen" content="yes">
-
-<!-- iOS Icons -->
-<link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='images/apple-touch-icon.png') }}">
-<link rel="apple-touch-icon" sizes="192x192" href="{{ url_for('static', filename='images/icon-192.png') }}">
-<link rel="apple-touch-icon" sizes="512x512" href="{{ url_for('static', filename='images/icon-512.png') }}">
-
-<!-- Windows/Edge -->
-<meta name="msapplication-TileColor" content="#007bff">
-<meta name="msapplication-TileImage" href="{{ url_for('static', filename='images/icon-192.png') }}">
-
-<!-- Favicons -->
-<link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/icon-32.png') }}">
-<link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='images/icon-16.png') }}">
-<link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='images/icon-32.png') }}">
-
-<!-- Local Business Schema -->
-<script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@type": "Church",
-    "name": "ICTUE LAMPA - Cristo Tu Única Esperanza",
-    "description": "Iglesia cristiana en Santiago, Lampa",
-    "url": "https://ictue-lampa-web.onrender.com/",
-    "logo": "{{ url_for('static', filename='images/logo.png.jpeg') }}",
-    "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "Callejón Balmaceda 1087",
-        "addressLocality": "Santiago",
-        "addressRegion": "Lampa",
-        "addressCountry": "CL"
-    },
-    "telephone": "+56972974990",
-    "email": "sebanava2003@gmail.com",
-    "sameAs": [
-        "https://web.facebook.com/ictuelampa",
-        "https://www.instagram.com/ictuelampa/",
-        "https://www.youtube.com/@ictuelampa4074"
-    ],
-    "openingHours": [
-        "Tu 19:00-21:00",
-        "Th 19:00-21:00", 
-        "Su 11:30-13:30"
-    ]
-}
-</script>
-
-<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-```
-
-</head>
-<body>
-    <!-- Header -->
+<!doctype html>
+<html lang="es-CL">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="google-site-verification"
+      content="wuOolfViVCsT_KJvxVN3o9vhHn2nxzzlwlgy5YNcI3U"
+    />
+    <title>ICTUE LAMPA · Cristo Tu Única Esperanza</title>
+    <meta
+      name="description"
+      content="Una comunidad de fe en Santiago, Lampa. Conoce ICTUE LAMPA, nuestros pastores, horarios y ministerios. Visítanos en Callejón Balmaceda 1087 o envía tu petición de oración."
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#171919" />
+    <link rel="canonical" href="https://www.ictuelampa.cl/" />
+    <meta
+      property="og:title"
+      content="ICTUE LAMPA · Cristo Tu Única Esperanza"
+    />
+    <meta
+      property="og:description"
+      content="Un lugar de fe, esperanza y comunidad en Lampa. Te esperamos."
+    />
+    <meta property="og:url" content="https://www.ictuelampa.cl/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_CL" />
+    <meta property="og:site_name" content="ICTUE LAMPA" />
+    <meta
+      property="og:image"
+      content="https://www.ictuelampa.cl/static/images/logo.png.jpeg"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="ICTUE LAMPA · Cristo Tu Única Esperanza"
+    />
+    <meta
+      name="twitter:description"
+      content="Una comunidad de fe y esperanza en Santiago, Lampa."
+    />
+    <meta
+      name="twitter:image"
+      content="https://www.ictuelampa.cl/static/images/logo.png.jpeg"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="{{ url_for('static', filename='images/favicon-96x96.png') }}"
+    />
+    <link
+      rel="apple-touch-icon"
+      href="{{ url_for('static', filename='images/apple-touch-icon.png') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css', v='20261007') }}"
+    />
+    <script
+      src="{{ url_for('static', filename='js/script.js', v='20261007') }}"
+      defer
+    ></script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Church",
+        "name": "ICTUE LAMPA - Cristo Tu Única Esperanza",
+        "description": "Iglesia cristiana evangélica en Santiago, Lampa",
+        "url": "https://www.ictuelampa.cl/",
+        "logo": "https://www.ictuelampa.cl/static/images/logo.png.jpeg",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Callejón Balmaceda 1087",
+          "addressLocality": "Lampa",
+          "addressRegion": "Santiago",
+          "addressCountry": "CL"
+        },
+        "telephone": "+56972974990",
+        "email": "sebanava2003@gmail.com",
+        "sameAs": [
+          "https://web.facebook.com/ictuelampa",
+          "https://www.instagram.com/ictuelampa/",
+          "https://www.youtube.com/@ictuelampa4074"
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
     <header class="header">
-        <nav class="nav-container">
-            <div class="logo-section">
-                <div style="width: 45px !important; height: 45px !important; border-radius: 50% !important; overflow: hidden !important; background: transparent !important; display: flex !important; align-items: center !important; justify-content: center !important; padding: 0 !important; box-shadow: 0 2px 8px rgba(237, 28, 36, 0.3) !important; position: relative !important;">
-                    <img src="{{ url_for('static', filename='images/logo.png.jpeg') }}" alt="Logo ICTUE LAMPA - Cristo Tu Única Esperanza" style="width: 100% !important; height: 100% !important; border-radius: 50% !important; object-fit: cover !important; display: block !important;">
-                </div>
-                <div class="logo-text">
-                    <h1>ICTUE <span class="logo-lampa">LAMPA</span></h1>
-                    <p>Cristo Tu Única Esperanza</p>
-                </div>
-            </div>
-            <ul class="nav-menu">
-                <li><a href="#inicio" aria-label="Ir a inicio">Inicio</a></li>
-                <li><a href="#nosotros" aria-label="Conocer sobre nosotros">Nosotros</a></li>
-                <li><a href="#servicios" aria-label="Ver nuestros servicios">Servicios</a></li>
-                <li><a href="#contacto" aria-label="Información de contacto">Contacto</a></li>
-                <li><a href="#oracion" aria-label="Enviar petición de oración">Oración</a></li>
-            </ul>
-        </nav>
-    </header>
-
-```
-<!-- Hero Section -->
-<section class="hero" id="inicio">
-    <div class="hero-content">
-        <h1 class="hero-title">Bienvenidos a ICTUE LAMPA</h1>
-        <p class="hero-subtitle">Iglesia Cristo Tu Única Esperanza en Santiago, Lampa - Un lugar de fe, esperanza y comunidad donde encontrarás el amor de Cristo</p>
-        <a href="https://www.google.com/maps/search/?api=1&query=Ictue+Lampa" target="_blank" class="cta-btn">Visítanos en Callejón Balmaceda 1087</a>
-        <button id="installButton" class="cta-btn" style="display: none; margin-left: 1rem; background: #28a745;">
-            📱 Instalar App
+      <nav class="container nav" aria-label="Navegación principal">
+        <a class="brand" href="#inicio" aria-label="ICTUE LAMPA, inicio"
+          ><img
+            src="{{ url_for('static', filename='images/logo.png.jpeg') }}"
+            alt=""
+            width="48"
+            height="48"
+          /><span
+            >ICTUE <strong>LAMPA</strong
+            ><small>Cristo Tu Única Esperanza</small></span
+          ></a
+        >
+        <button
+          class="menu-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="nav-menu"
+          hidden
+        >
+          <span>Menú</span><span class="menu-lines" aria-hidden="true"></span>
         </button>
-    </div>
-    <div class="hero-decoration"></div>
-</section>
-
-<!-- Servicios -->
-<section class="services" id="servicios">
-    <div class="container">
-        <h2 class="section-title">Servicios de la Iglesia ICTUE LAMPA</h2>
-        <div class="services-grid">
-            <article class="service-card">
-                <div class="service-icon">🏛️</div>
-                <h3>Campus Iglesia ICTUE LAMPA</h3>
-                <p>Nuestro templo está ubicado en Callejón Balmaceda 1087, Santiago, Lampa. Un lugar acogedor donde la familia de Dios se reúne para adorar y crecer en fe.</p>
-            </article>
-            <article class="service-card">
-                <div class="service-icon">🌱</div>
-                <h3>Programa Plantados</h3>
-                <p>Si recibiste al Señor Jesús en tu corazón, queremos acompañarte en tu crecimiento espiritual. Programa de discipulado cristiano en ICTUE LAMPA.</p>
-            </article>
-            <article class="service-card">
-                <div class="service-icon">💒</div>
-                <h3>Matrimonios Cristianos</h3>
-                <p>Realizamos ceremonias matrimoniales cristianas en Santiago, Lampa. Haz tu solicitud para que nuestros pastores oficien tu boda en ICTUE LAMPA.</p>
-            </article>
-            <article class="service-card">
-                <div class="service-icon">🙏</div>
-                <h3>Ministerio de Oración</h3>
-                <p>¿Necesitas que oremos por ti? Nuestro equipo pastoral está disponible para interceder por tus peticiones. Contacta a ICTUE LAMPA.</p>
-            </article>
+        <div class="nav-menu" id="nav-menu">
+          <a href="#nosotros">Nosotros</a><a href="#servicios">Ministerios</a
+          ><a href="#horarios">Horarios</a><a href="#contacto">Visítanos</a
+          ><a class="nav-prayer" href="#oracion"
+            >Oremos por ti <span aria-hidden="true">↗︎</span></a
+          >
         </div>
-    </div>
-</section>
-
-<!-- Petición de Oración -->
-<section class="oracion" id="oracion">
-    <div class="container">
-        <h2 class="section-title">Envía tu Petición de Oración</h2>
-        <p style="text-align:center; color:#64748b; margin-bottom: 2.5rem; font-size: 1.05rem;">
-            Cuéntanos tu necesidad y nuestro equipo de intercesión orará por ti 🙏
-        </p>
-        <div class="oracion-form-wrapper">
-            <div class="oracion-card">
-                <div class="oracion-field">
-                    <label for="oracion-nombre">Tu nombre</label>
-                    <input type="text" id="oracion-nombre" placeholder="¿Cómo te llamas?" maxlength="50">
-                </div>
-                <div class="oracion-field">
-                    <label for="oracion-peticion">Tu petición de oración</label>
-                    <textarea id="oracion-peticion" placeholder="Cuéntanos qué necesitas llevar en oración..." rows="5" maxlength="500"></textarea>
-                </div>
-                <div class="oracion-field">
-                    <label for="oracion-telefono">Tu número de teléfono <span class="campo-opcional">(opcional)</span></label>
-                    <input type="tel" id="oracion-telefono" placeholder="Ej: +56 9 1234 5678" maxlength="20">
-                    <div class="oracion-llamada-check">
-                        <input type="checkbox" id="oracion-llamada">
-                        <label for="oracion-llamada">¿Quieres que te llamemos?</label>
-                    </div>
-                </div>
-                <button class="oracion-btn" onclick="enviarPeticion()">
-                    🙏 Enviar Petición de Oración
-                </button>
-                <div id="oracion-mensaje" class="oracion-mensaje" style="display:none;"></div>
+      </nav>
+    </header>
+    <main id="contenido">
+      <section class="hero" id="inicio" aria-labelledby="hero-title">
+        <div class="hero-media">
+          <img
+            class="hero-photo"
+            src="{{ url_for('static', filename='images/vigilia.jpg') }}"
+            alt=""
+            width="1336"
+            height="1652"
+            fetchpriority="high"
+          />
+        </div>
+        <div class="hero-overlay"></div>
+        <div class="container hero-content">
+          <p class="eyebrow light">
+            <span class="red-dot"></span> Una comunidad de fe en Lampa
+          </p>
+          <h1 id="hero-title">Cristo, tu única<br /><em>esperanza.</em></h1>
+          <p class="hero-description">
+            Un lugar para encontrarnos, crecer en la fe y experimentar juntos el
+            amor de Cristo. Bienvenido a ICTUE LAMPA.
+          </p>
+          <div class="actions">
+            <a class="button button-red" href="#horarios"
+              >Te esperamos <span aria-hidden="true">↗︎</span></a
+            ><a class="button button-outline" href="#nosotros"
+              >Conoce nuestra iglesia <span aria-hidden="true">→</span></a
+            >
+          </div>
+        </div>
+        <div class="container hero-bottom">
+          <span>Santiago · Lampa · Chile</span
+          ><a href="#bienvenida"
+            >Descubre nuestra comunidad <span aria-hidden="true">↓</span></a
+          >
+        </div>
+      </section>
+      <section class="welcome section" id="bienvenida">
+        <div class="container welcome-grid">
+          <div data-reveal>
+            <p class="eyebrow">Bienvenido a casa</p>
+            <h2>La fe nos une.<br />La esperanza<br /><em>nos mueve.</em></h2>
+          </div>
+          <div class="welcome-copy" data-reveal>
+            <p class="lead">
+              Somos Iglesia Cristo Tu Única Esperanza. Una comunidad cristiana
+              evangélica en Santiago, Lampa, que comparte el amor de Cristo con
+              las familias desde 2020.
+            </p>
+            <p>
+              Nos reunimos para adorar, crecer en la fe y acompañarnos. Bajo el
+              liderazgo de nuestros pastores Eduardo Navarrete y Mireya Pardo,
+              queremos que encuentres un lugar acogedor para ti y tu familia.
+            </p>
+            <a class="text-link" href="#contacto"
+              >Encuéntranos en Callejón Balmaceda 1087
+              <span aria-hidden="true">↗︎</span></a
+            >
+          </div>
+        </div>
+      </section>
+      <section class="schedule section" id="horarios">
+        <div class="container">
+          <div class="section-heading" data-reveal>
+            <div>
+              <p class="eyebrow light">Hagamos espacio para encontrarnos</p>
+              <h2>Nos vemos<br /><em>en la iglesia.</em></h2>
             </div>
-        </div>
-    </div>
-</section>
-
-<!-- Ubicación -->
-<section class="location">
-    <div class="container">
-        <div class="location-content">
-            <div class="location-info">
-                <h2>Ubicación de ICTUE LAMPA</h2>
-                <div class="location-details">
-                    <p><strong>Dirección: Callejón Balmaceda 1087</strong></p>
-                    <p>Santiago, Lampa, Chile</p>
-                    <p>📞 Teléfono: +56 9 7297 4990</p>
-                    <p>✉️ Email: sebanava2003@gmail.com</p>
-                    <p>🕐 Horarios: Martes y Jueves 20:00, Domingos 11:30</p>
-                </div>
-            </div>
-            <div class="location-visual">
-                <div class="location-card">
-                    <h3>Te esperamos en ICTUE LAMPA</h3>
-                    <p>Ven y experimenta la presencia de Dios con nosotros en Santiago, Lampa</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Pastores -->
-<section class="pastors" id="nosotros">
-    <div class="container">
-        <h2 class="section-title">Pastores de ICTUE LAMPA</h2>
-        <div class="pastors-grid">
-            <article class="pastor-card">
-                <div class="pastor-image">
-                    <img src="{{ url_for('static', filename='images/pastor.jpg.jpeg') }}" alt="Pastor Eduardo Navarrete - ICTUE LAMPA">
-                </div>
-                <h3>Pastor Eduardo Navarrete</h3>
-                <p class="pastor-role">Pastor Principal de ICTUE LAMPA</p>
-                <p>Líder espiritual comprometido con el crecimiento de nuestra congregación en Santiago, Lampa y la extensión del reino de Dios.</p>
+            <p>
+              Reuniones presenciales en<br />Callejón Balmaceda 1087, Lampa.
+            </p>
+          </div>
+          <div class="schedule-grid">
+            <article class="schedule-card" data-reveal>
+              <span class="card-index">01 / Reunión presencial</span>
+              <h3>Martes</h3>
+              <p class="time">20:00<span>hrs</span></p>
+              <a href="#contacto"
+                >Cómo llegar <span aria-hidden="true">↗︎</span></a
+              >
             </article>
-            <article class="pastor-card">
-                <div class="pastor-image">
-                    <img src="{{ url_for('static', filename='images/pastora.jpg.jpeg') }}" alt="Pastora Mireya Pardo - ICTUE LAMPA">
-                </div>
-                <h3>Pastora Mireya Pardo</h3>
-                <p class="pastor-role">Pastora Principal de ICTUE LAMPA</p>
-                <p>Dedicada al ministerio de la mujer y al cuidado pastoral de las familias en nuestra comunidad de fe en Santiago, Lampa.</p>
+            <article class="schedule-card" data-reveal>
+              <span class="card-index">02 / Reunión presencial</span>
+              <h3>Jueves</h3>
+              <p class="time">20:00<span>hrs</span></p>
+              <a href="#contacto"
+                >Cómo llegar <span aria-hidden="true">↗︎</span></a
+              >
             </article>
-        </div>
-    </div>
-</section>
-
-
-<!-- Horarios -->
-<section class="schedule">
-    <div class="container">
-        <h2 class="section-title">Horarios de Servicios - ICTUE LAMPA</h2>
-        <div class="schedule-grid">
-            <article class="schedule-card">
-                <h3>Reuniones Presenciales en ICTUE LAMPA</h3>
-                <div class="schedule-list">
-                    <div class="schedule-item">
-                        <span>Martes</span>
-                        <span>20:00</span>
-                    </div>
-                    <div class="schedule-item">
-                        <span>Jueves</span>
-                        <span>20:00</span>
-                    </div>
-                    <div class="schedule-item">
-                        <span>Domingo</span>
-                        <span>11:30</span>
-                    </div>
-                </div>
+            <article class="schedule-card featured" data-reveal>
+              <span class="card-index">03 / Reunión presencial</span>
+              <h3>Domingo</h3>
+              <p class="time">11:30<span>hrs</span></p>
+              <a href="#contacto"
+                >Cómo llegar <span aria-hidden="true">↗︎</span></a
+              >
             </article>
-            <article class="schedule-card">
-                <h3>Programas Radiales</h3>
-                <div class="schedule-list">
-                    <div class="schedule-item">
-                        <span>Radio 97.1</span>
-                        <span>Dom 16:00</span>
-                    </div>
-                </div>
+          </div>
+          <div class="radio-row" data-reveal>
+            <span class="radio-symbol" aria-hidden="true">◎</span>
+            <div>
+              <strong>La esperanza también se escucha</strong>
+              <p>Programa radial · Radio 97.1 FM</p>
+            </div>
+            <span>Domingos <strong>16:00 hrs</strong></span>
+          </div>
+        </div>
+      </section>
+      <section class="ministries section" id="servicios">
+        <div class="container">
+          <div class="section-heading" data-reveal>
+            <div>
+              <p class="eyebrow">Crezcamos juntos</p>
+              <h2>Una fe que<br /><em>se vive y comparte.</em></h2>
+            </div>
+            <p>
+              Conoce los espacios de servicio y<br />acompañamiento de ICTUE
+              LAMPA.
+            </p>
+          </div>
+          <div class="ministry-grid">
+            <a class="ministry-card" href="#contacto" data-reveal
+              ><span class="ministry-icon" aria-hidden="true">⌂</span
+              ><span class="card-index">01</span>
+              <h3>Nuestro templo</h3>
+              <p>
+                Un lugar acogedor donde la familia de Dios se reúne para adorar
+                y crecer en fe.
+              </p>
+              <span class="card-link"
+                >Ven a conocernos <span aria-hidden="true">↗︎</span></span
+              ></a
+            >
+            <a
+              class="ministry-card"
+              href="https://wa.me/56972974990"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-reveal
+              ><span class="ministry-icon" aria-hidden="true">✳</span
+              ><span class="card-index">02</span>
+              <h3>Programa Plantados</h3>
+              <p>
+                Si recibiste al Señor Jesús en tu corazón, queremos acompañarte
+                en tu crecimiento espiritual a través del discipulado cristiano.
+              </p>
+              <span class="card-link"
+                >Consulta por WhatsApp <span aria-hidden="true">↗︎</span></span
+              ></a
+            >
+            <a
+              class="ministry-card"
+              href="https://wa.me/56972974990"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-reveal
+              ><span class="ministry-icon" aria-hidden="true">♡</span
+              ><span class="card-index">03</span>
+              <h3>Matrimonios cristianos</h3>
+              <p>
+                Realizamos ceremonias matrimoniales cristianas. Haz tu solicitud
+                para que nuestros pastores oficien tu boda.
+              </p>
+              <span class="card-link"
+                >Consulta por WhatsApp <span aria-hidden="true">↗︎</span></span
+              ></a
+            >
+            <a class="ministry-card" href="#oracion" data-reveal
+              ><span class="ministry-icon" aria-hidden="true">✧</span
+              ><span class="card-index">04</span>
+              <h3>Ministerio de oración</h3>
+              <p>
+                Nuestro equipo pastoral está disponible para interceder por tus
+                peticiones. Cuéntanos cómo podemos orar por ti.
+              </p>
+              <span class="card-link"
+                >Envía tu petición <span aria-hidden="true">↗︎</span></span
+              ></a
+            >
+          </div>
+          <p class="ministry-note" data-reveal>
+            También ofrecemos consejería pastoral.
+            <a href="#contacto">Ponte en contacto con nosotros →</a>
+          </p>
+        </div>
+      </section>
+      <section class="pastors section" id="nosotros">
+        <div class="container pastors-layout">
+          <div class="pastors-intro" data-reveal>
+            <p class="eyebrow">Corazones al servicio</p>
+            <h2>Conoce a<br />nuestros<br /><em>pastores.</em></h2>
+            <p>
+              Un liderazgo comprometido con el cuidado de las familias, el
+              crecimiento de nuestra congregación y la extensión del reino de
+              Dios.
+            </p>
+            <a class="text-link" href="#oracion"
+              >Queremos acompañarte <span aria-hidden="true">↗︎</span></a
+            >
+          </div>
+          <div class="pastors-grid">
+            <article class="pastor-card" data-reveal>
+              <div class="portrait">
+                <img
+                  src="{{ url_for('static', filename='images/pastor.jpg.jpeg') }}"
+                  alt="Pastor Eduardo Navarrete"
+                  width="853"
+                  height="1280"
+                  loading="lazy"
+                />
+              </div>
+              <p class="eyebrow">Pastor principal</p>
+              <h3>Eduardo Navarrete</h3>
+              <p>
+                Líder espiritual comprometido con el crecimiento de nuestra
+                congregación y la extensión del reino de Dios.
+              </p>
             </article>
+            <article class="pastor-card" data-reveal>
+              <div class="portrait">
+                <img
+                  src="{{ url_for('static', filename='images/pastora.jpg.jpeg') }}"
+                  alt="Pastora Mireya Pardo"
+                  width="853"
+                  height="1280"
+                  loading="lazy"
+                />
+              </div>
+              <p class="eyebrow">Pastora principal</p>
+              <h3>Mireya Pardo</h3>
+              <p>
+                Dedicada al ministerio de la mujer y al cuidado pastoral de las
+                familias en nuestra comunidad de fe.
+              </p>
+            </article>
+          </div>
         </div>
-    </div>
-</section>
-
-<!-- Footer -->
-<footer class="footer" id="contacto">
-    <div class="container">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>ICTUE LAMPA</h3>
-                <p>Cristo Tu Única Esperanza - Iglesia en Santiago, Lampa</p>
-                <div class="social-links">
-                    <a href="https://web.facebook.com/ictuelampa?locale=es_LA" target="_blank" title="Facebook ICTUE LAMPA" class="social-facebook">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                        </svg>
-                    </a>
-                    <a href="https://www.instagram.com/ictuelampa/" target="_blank" title="Instagram ICTUE LAMPA" class="social-instagram">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                        </svg>
-                    </a>
-                    <a href="https://www.youtube.com/@ictuelampa4074" target="_blank" title="YouTube ICTUE LAMPA" class="social-youtube">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                        </svg>
-                    </a>
-                    <a href="https://wa.me/56972974990" target="_blank" title="WhatsApp ICTUE LAMPA" class="social-whatsapp">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.893 3.488"/>
-                        </svg>
-                    </a>
-                </div>
-            </div>
-            <div class="footer-section">
-                <h4>Contacto ICTUE LAMPA</h4>
-                <p>Callejón Balmaceda 1087</p>
-                <p>Santiago, Lampa, Chile</p>
-                <p>+56 9 7297 4990</p>
-                <p>ictueoracion@gmail.com</p>
-            </div>
+      </section>
+      <section class="community section" id="eventos">
+        <div class="container community-layout">
+          <div data-reveal>
+            <p class="eyebrow">Nuestra vida en comunidad</p>
+            <h2>Momentos que<br /><em>nos unen.</em></h2>
+            <p>
+              La adoración y los encuentros especiales forman parte de nuestra
+              historia. Una mirada a los afiches de inauguración de nuestro
+              templo y de vigilia.
+            </p>
+            <p class="archive-note">
+              Archivo de la iglesia · Estos afiches no anuncian próximos
+              eventos.
+            </p>
+            <a
+              class="text-link"
+              href="https://www.instagram.com/ictuelampa/"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Síguenos en Instagram <span aria-hidden="true">↗︎</span></a
+            >
+          </div>
+          <div class="archive-grid">
+            <figure data-reveal>
+              <img
+                src="{{ url_for('static', filename='images/inauguracion.jpeg') }}"
+                alt="Afiche histórico de inauguración del nuevo templo"
+                width="1080"
+                height="1350"
+                loading="lazy"
+              />
+              <figcaption>
+                Inauguración del templo <span aria-hidden="true">↗︎</span>
+              </figcaption>
+            </figure>
+            <figure data-reveal>
+              <img
+                src="{{ url_for('static', filename='images/vigilia.jpg') }}"
+                alt="Afiche histórico de vigilia"
+                width="1336"
+                height="1652"
+                loading="lazy"
+              />
+              <figcaption>Vigilia <span aria-hidden="true">↗︎</span></figcaption>
+            </figure>
+          </div>
         </div>
-        
-        <!-- Descripción SEO adicional -->
-        <div class="footer-description" style="padding: 2rem 0 1rem 0; border-top: 1px solid #444; margin-top: 2rem;">
-            <div class="container">
-                <div style="text-align: center; color: #999; font-size: 0.75rem; line-height: 1.5; max-width: 800px; margin: 0 auto;">
-                    <p style="margin-bottom: 1rem;">
-                        <strong>ICTUE LAMPA - Cristo Tu Única Esperanza</strong> es una iglesia cristiana evangélica establecida en Santiago, Lampa, Chile. Bajo el liderazgo pastoral de Eduardo Navarrete y Mireya Pardo, nuestra congregación se ha convertido en un faro de esperanza y transformación espiritual para las familias de Lampa y sectores aledaños desde 2020.
-                    </p>
-                    <p style="margin-bottom: 1rem;">
-                        Ofrecemos servicios religiosos cristianos, matrimonios cristianos, discipulado bíblico a través del programa Plantados, ministerio de oración, eventos especiales y consejería pastoral. Nuestro templo ubicado en Callejón Balmaceda 1087 cuenta con instalaciones cómodas y acogedoras para toda la familia.
-                    </p>
-                    <p style="margin-bottom: 0;">
-                        Te invitamos a ser parte de nuestra comunidad de fe. Servicios: Martes y Jueves 20:00 hrs, Domingos 11:30 hrs. También nos puedes escuchar en nuestro programa radial domingos 16:00 hrs por Radio 97.1 FM.
-                    </p>
-                </div>
+      </section>
+      <section class="prayer section" id="oracion">
+        <div class="container prayer-layout">
+          <div class="prayer-intro" data-reveal>
+            <p class="eyebrow light">No tienes que caminar solo</p>
+            <span class="prayer-symbol" aria-hidden="true">✧</span>
+            <h2>Oremos<br /><em>por ti.</em></h2>
+            <p>
+              Cuéntanos tu necesidad. Nuestro equipo de intercesión llevará tu
+              petición en oración y, si lo deseas, puedes solicitar una llamada.
+            </p>
+            <a href="mailto:ictueoracion@gmail.com" class="text-link"
+              >ictueoracion@gmail.com <span aria-hidden="true">↗︎</span></a
+            >
+          </div>
+          <form
+            class="prayer-form"
+            id="prayer-form"
+            action="{{ url_for('enviar_peticion') }}"
+            method="post"
+            data-reveal
+          >
+            <p class="form-title">Tu petición de oración</p>
+            <p class="form-description">Estamos aquí para acompañarte.</p>
+            <div class="field">
+              <label for="oracion-nombre">Tu nombre</label
+              ><input
+                id="oracion-nombre"
+                name="nombre"
+                type="text"
+                maxlength="50"
+                autocomplete="name"
+                placeholder="¿Cómo te llamas?"
+                required
+              />
             </div>
+            <div class="field">
+              <label for="oracion-peticion">¿Por qué quieres que oremos?</label
+              ><textarea
+                id="oracion-peticion"
+                name="peticion"
+                rows="4"
+                maxlength="500"
+                placeholder="Escribe aquí tu petición…"
+                required
+                aria-describedby="peticion-count"
+              ></textarea
+              ><span class="field-hint" id="peticion-count"
+                >0 / 500 caracteres</span
+              >
+            </div>
+            <div class="field">
+              <label for="oracion-telefono"
+                >Tu teléfono <span>(opcional)</span></label
+              ><input
+                id="oracion-telefono"
+                name="telefono"
+                type="tel"
+                maxlength="20"
+                autocomplete="tel"
+                placeholder="Ej: +56 9 1234 5678"
+              />
+            </div>
+            <label class="checkbox-label" for="oracion-llamada"
+              ><input
+                id="oracion-llamada"
+                name="llamada"
+                type="checkbox"
+              /><span>Me gustaría que me llamaran</span></label
+            >
+            <button class="button button-red prayer-submit" type="submit">
+              Enviar petición <span aria-hidden="true">↗︎</span>
+            </button>
+            <p
+              id="oracion-mensaje"
+              class="form-message"
+              role="status"
+              aria-live="polite"
+              aria-atomic="true"
+              hidden
+            ></p>
+            <noscript
+              ><p>
+                Para enviar este formulario, activa JavaScript o escríbenos a
+                <a href="mailto:ictueoracion@gmail.com"
+                  >ictueoracion@gmail.com</a
+                >.
+              </p></noscript
+            >
+          </form>
         </div>
-        
+      </section>
+      <section class="contact section" id="contacto">
+        <div class="container contact-layout">
+          <div data-reveal>
+            <p class="eyebrow">Hay un lugar para ti</p>
+            <h2>Te esperamos<br /><em>en Lampa.</em></h2>
+            <p>
+              Ven y experimenta la presencia de Dios con nosotros. Será una
+              alegría compartir contigo.
+            </p>
+            <a
+              class="button button-dark"
+              href="https://www.google.com/maps/search/?api=1&amp;query=Ictue+Lampa"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Cómo llegar a la iglesia <span aria-hidden="true">↗︎</span></a
+            >
+          </div>
+          <div class="contact-details" data-reveal>
+            <div>
+              <span class="eyebrow">Encuéntranos</span>
+              <h3>Callejón Balmaceda 1087</h3>
+              <p>Santiago, Lampa, Chile</p>
+            </div>
+            <div>
+              <span class="eyebrow">Conversemos</span
+              ><a href="tel:+56972974990"
+                >+56 9 7297 4990 <span aria-hidden="true">↗︎</span></a
+              ><a href="mailto:sebanava2003@gmail.com"
+                >sebanava2003@gmail.com <span aria-hidden="true">↗︎</span></a
+              ><a
+                href="https://wa.me/56972974990"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Escríbenos por WhatsApp <span aria-hidden="true">↗︎</span></a
+              >
+            </div>
+            <div>
+              <span class="eyebrow">Peticiones de oración</span
+              ><a href="mailto:ictueoracion@gmail.com"
+                >ictueoracion@gmail.com <span aria-hidden="true">↗︎</span></a
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-top">
+          <a class="brand" href="#inicio"
+            ><img
+              src="{{ url_for('static', filename='images/logo.png.jpeg') }}"
+              alt=""
+              width="48"
+              height="48"
+            /><span
+              >ICTUE <strong>LAMPA</strong
+              ><small>Cristo Tu Única Esperanza</small></span
+            ></a
+          >
+          <p>Fe. Esperanza. Comunidad.</p>
+          <a class="back-top" href="#inicio"
+            >Volver arriba <span aria-hidden="true">↑</span></a
+          >
+        </div>
+        <div class="footer-grid">
+          <p>
+            Iglesia cristiana evangélica en Santiago, Lampa.<br />Una comunidad
+            de fe para toda la familia.
+          </p>
+          <nav aria-label="Redes sociales" class="social-links">
+            <a
+              href="https://web.facebook.com/ictuelampa?locale=es_LA"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Facebook ↗︎</a
+            ><a
+              href="https://www.instagram.com/ictuelampa/"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Instagram ↗︎</a
+            ><a
+              href="https://www.youtube.com/@ictuelampa4074"
+              target="_blank"
+              rel="noopener noreferrer"
+              >YouTube ↗︎</a
+            ><a
+              href="https://wa.me/56972974990"
+              target="_blank"
+              rel="noopener noreferrer"
+              >WhatsApp ↗︎</a
+            >
+          </nav>
+        </div>
         <div class="footer-bottom">
-            <p>&copy; 2025 ICTUE LAMPA - Cristo Tu Única Esperanza. Todos los derechos reservados.</p>
+          <span
+            >© <span id="year">2026</span> ICTUE LAMPA. Todos los derechos
+            reservados.</span
+          ><span>Callejón Balmaceda 1087 · Lampa, Chile</span>
         </div>
-    </div>
-</footer>
-
-<script src="{{ url_for('static', filename='js/script.js') }}"></script>
-<script>
-    // Variables globales
-    let deferredPrompt;
-    const installButton = document.getElementById('installButton');
-
-    // Registrar Service Worker
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/static/sw.js')
-                .then(registration => {
-                    console.log('✅ Service Worker registrado exitosamente:', registration);
-                    
-                    // Verificar si hay actualizaciones
-                    registration.addEventListener('updatefound', () => {
-                        console.log('🔄 Nueva versión disponible');
-                    });
-                })
-                .catch(registrationError => {
-                    console.error('❌ Error al registrar Service Worker:', registrationError);
-                });
-        });
-    } else {
-        console.log('❌ Service Worker no está soportado en este navegador');
-    }
-
-    // Evento para mostrar prompt de instalación (Android/Chrome)
-    window.addEventListener('beforeinstallprompt', (e) => {
-        console.log('💡 Prompt de instalación disponible');
-        // Prevenir que se muestre automáticamente
-        e.preventDefault();
-        // Guardar el evento para usarlo después
-        deferredPrompt = e;
-        // Mostrar botón de instalación
-        if (installButton) {
-            installButton.style.display = 'inline-block';
-            console.log('👆 Botón de instalación mostrado');
-        }
-    });
-
-    // Click en botón de instalación
-    if (installButton) {
-        installButton.addEventListener('click', async () => {
-            console.log('📱 Usuario clickeó instalar');
-            
-            if (deferredPrompt) {
-                // Ocultar botón
-                installButton.style.display = 'none';
-                // Mostrar prompt de instalación
-                deferredPrompt.prompt();
-                // Esperar respuesta del usuario
-                const { outcome } = await deferredPrompt.userChoice;
-                
-                if (outcome === 'accepted') {
-                    console.log('✅ Usuario aceptó instalar la app');
-                } else {
-                    console.log('❌ Usuario canceló la instalación');
-                    // Volver a mostrar el botón después de 30 segundos
-                    setTimeout(() => {
-                        if (installButton) installButton.style.display = 'inline-block';
-                    }, 30000);
-                }
-                deferredPrompt = null;
-            } else {
-                console.log('⚠️ Prompt de instalación no disponible');
-            }
-        });
-    }
-
-    // Detectar si es iOS
-    function isIOS() {
-        return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-    }
-
-    // Detectar si ya está instalado como PWA
-    function isInStandaloneMode() {
-        return ('standalone' in window.navigator) && (window.navigator.standalone);
-    }
-
-    // Mostrar instrucciones para iOS
-    if (isIOS() && !isInStandaloneMode()) {
-        console.log('📱 Detectado iOS - Mostrando instrucciones');
-        
-        // Crear banner de instrucciones para iOS
-        const iosPrompt = document.createElement('div');
-        iosPrompt.id = 'iosInstallPrompt';
-        iosPrompt.innerHTML = `
-            <div style="
-                position
-```
+      </div>
+    </footer>
+  </body>
+</html>
