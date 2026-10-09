@@ -713,7 +713,7 @@ html.event-poster-open {
 }
 .schedule-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
 }
 .schedule-card {
@@ -743,7 +743,7 @@ html.event-poster-open {
   margin-top: 30px;
 }
 .time {
-  font-size: clamp(2.6rem, 3.8vw, 3.5rem);
+  font-size: clamp(2.6rem, 4.4vw, 4.7rem);
   font-weight: 500;
   letter-spacing: -0.055em;
   line-height: 1.2;
@@ -775,9 +775,9 @@ html.event-poster-open {
 .schedule-card.featured .card-index {
   color: white;
 }
-@media (max-width: 1100px) {
+@media (max-width: 640px) {
   .schedule-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr;
   }
 }
 .radio-row {
@@ -803,6 +803,23 @@ html.event-poster-open {
   font-size: 2.5rem;
   color: #f0c1b1;
   line-height: 1;
+}
+.intercession-row .radio-symbol {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+}
+@media (max-width: 640px) {
+  .radio-row {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .radio-row > span:last-child {
+    margin-left: 0;
+    flex-basis: 100%;
+    padding-left: 46px;
+    font-size: 0.78rem;
+  }
 }
 .ministry-grid {
   display: grid;
@@ -1425,7 +1442,6 @@ html.event-poster-open {
 .event-card:nth-child(3) {
   --reveal-delay: 300ms;
 }
-.schedule-card:nth-child(4),
 .ministry-card:nth-child(4) {
   --reveal-delay: 450ms;
 }
@@ -1711,16 +1727,6 @@ html.event-poster-open {
     grid-column: 1/-1;
     margin-top: 18px;
     padding-top: 12px;
-  }
-  .radio-row {
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-  .radio-row > span:last-child {
-    margin-left: 0;
-    flex-basis: 100%;
-    padding-left: 42px;
-    font-size: 0.78rem;
   }
   .ministry-grid {
     grid-template-columns: 1fr;
