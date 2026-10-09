@@ -713,10 +713,12 @@ html.event-poster-open {
 }
 .schedule-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
 }
 .schedule-card {
+  display: flex;
+  flex-direction: column;
   border: 1px solid #ffffff30;
   padding: 28px 30px;
   border-radius: 6px;
@@ -741,7 +743,7 @@ html.event-poster-open {
   margin-top: 30px;
 }
 .time {
-  font-size: clamp(2.6rem, 4.4vw, 4.7rem);
+  font-size: clamp(2.6rem, 3.8vw, 3.5rem);
   font-weight: 500;
   letter-spacing: -0.055em;
   line-height: 1.2;
@@ -753,12 +755,24 @@ html.event-poster-open {
   font-weight: 400;
   margin-left: 10px;
 }
+.schedule-description {
+  margin: -12px 0 24px;
+  color: #b9bdb5;
+  font-size: 0.82rem;
+  line-height: 1.7;
+}
 .schedule-card a {
   display: flex;
   justify-content: space-between;
   font-size: 0.75rem;
+  margin-top: auto;
   padding-top: 20px;
   border-top: 1px solid #ffffff25;
+}
+.schedule-card a svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
 }
 .schedule-card.featured {
   background: var(--red);
@@ -766,6 +780,11 @@ html.event-poster-open {
 }
 .schedule-card.featured .card-index {
   color: white;
+}
+@media (max-width: 1100px) {
+  .schedule-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 .radio-row {
   display: flex;
@@ -1412,6 +1431,7 @@ html.event-poster-open {
 .event-card:nth-child(3) {
   --reveal-delay: 300ms;
 }
+.schedule-card:nth-child(4),
 .ministry-card:nth-child(4) {
   --reveal-delay: 450ms;
 }
@@ -1692,6 +1712,10 @@ html.event-poster-open {
   .schedule-card .time {
     margin: 12px 0 0;
     font-size: 2.8rem;
+  }
+  .schedule-description {
+    grid-column: 1/-1;
+    margin: 16px 0 0;
   }
   .schedule-card a {
     grid-column: 1/-1;
