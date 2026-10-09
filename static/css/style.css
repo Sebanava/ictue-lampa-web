@@ -755,12 +755,6 @@ html.event-poster-open {
   font-weight: 400;
   margin-left: 10px;
 }
-.schedule-description {
-  margin: -12px 0 24px;
-  color: #b9bdb5;
-  font-size: 0.82rem;
-  line-height: 1.7;
-}
 .schedule-card a {
   display: flex;
   justify-content: space-between;
@@ -1712,10 +1706,6 @@ html.event-poster-open {
   .schedule-card .time {
     margin: 12px 0 0;
     font-size: 2.8rem;
-  }
-  .schedule-description {
-    grid-column: 1/-1;
-    margin: 16px 0 0;
   }
   .schedule-card a {
     grid-column: 1/-1;
