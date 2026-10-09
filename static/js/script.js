@@ -35,7 +35,7 @@ document.addEventListener("click", (event) => {
   if (!header.contains(event.target)) closeMenu();
 });
 window
-  .matchMedia("(min-width: 801px)")
+  .matchMedia("(min-width: 1001px)")
   .addEventListener("change", () => closeMenu());
 
 let framePending = false;
@@ -664,4 +664,66 @@ if (instagramTrack) {
     pausePhotos();
   updateAutoplayControl();
   updateInstagramControls();
+}
+
+const eventCards = [...document.querySelectorAll("[data-event-date]")];
+const eventEmpty = document.getElementById("event-empty");
+function updateUpcomingEvents() {
+  if (!eventEmpty) return;
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/Santiago",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(new Date());
+  const date = Object.fromEntries(parts.map(({ type, value }) => [type, value]));
+  const today = `${date.year}-${date.month}-${date.day}`;
+  eventCards.forEach((card) => {
+    card.hidden = card.dataset.eventDate < today;
+  });
+  eventEmpty.hidden = eventCards.some((card) => !card.hidden);
+  requestScrollUpdate();
+}
+updateUpcomingEvents();
+window.addEventListener("pageshow", updateUpcomingEvents);
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) updateUpcomingEvents();
+});
+
+const eventDialog = document.getElementById("event-poster-dialog");
+if (eventDialog && typeof eventDialog.showModal === "function") {
+  const title = document.getElementById("event-dialog-title");
+  const image = eventDialog.querySelector(".event-dialog-image");
+  const original = eventDialog.querySelector(".event-dialog-original");
+  let opener;
+  document.querySelectorAll("[data-event-poster]").forEach((link) => {
+    link.setAttribute("aria-haspopup", "dialog");
+    link.setAttribute("aria-controls", eventDialog.id);
+    link.addEventListener("click", (event) => {
+      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey)
+        return;
+      event.preventDefault();
+      opener = link;
+      title.textContent = link.dataset.eventTitle;
+      image.alt = link.querySelector("img").alt;
+      image.src = link.href;
+      original.href = link.href;
+      eventDialog.showModal();
+      document.documentElement.classList.add("event-poster-open");
+    });
+  });
+  eventDialog.querySelector(".event-dialog-close").addEventListener("click", () => eventDialog.close());
+  eventDialog.addEventListener("click", (event) => {
+    if (event.target !== eventDialog) return;
+    const bounds = eventDialog.getBoundingClientRect();
+    if (
+      event.clientX < bounds.left || event.clientX > bounds.right ||
+      event.clientY < bounds.top || event.clientY > bounds.bottom
+    )
+      eventDialog.close();
+  });
+  eventDialog.addEventListener("close", () => {
+    document.documentElement.classList.remove("event-poster-open");
+    opener?.focus({ preventScroll: true });
+  });
 }
